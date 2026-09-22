@@ -1,0 +1,60 @@
+<div class="cartao-desafio cartao-padrao" [class.inscrito]="desafio.inscrito">
+  <div class="cabecalho-desafio">
+    <div class="tags-desafio">
+      <span class="emblema" [ngClass]="desafio.tipo === 'grupo' ? 'emblema-grupo' : 'emblema-gratuito'">
+        {{ desafio.tipo === 'grupo' ? '👥 Grupo' : '👤 Individual' }}
+      </span>
+      <span class="emblema" [ngClass]="desafio.formato === 'caucao' ? 'emblema-caucao' : 'emblema-gratuito'">
+        {{ desafio.formato === 'caucao' ? '💰 Caução' : '🆓 Gratuito' }}
+      </span>
+    </div>
+    <span class="duracao-badge">⏱ {{ desafio.duracao }}</span>
+  </div>
+
+  <h3 class="nome-desafio">{{ desafio.nome }}</h3>
+  <p class="descricao-desafio">{{ desafio.descricao }}</p>
+
+  <!-- Progresso se o usuário estiver inscrito -->
+  <div class="secao-progresso-card" *ngIf="desafio.inscrito && mostrarProgresso">
+    <app-barra-progresso
+      [valorAtual]="desafio.progressoUsuario"
+      [valorTotal]="desafio.objetivo"
+      [unidade]="desafio.unidade"
+    ></app-barra-progresso>
+  </div>
+
+  <!-- Métricas do Desafio -->
+  <div class="grade-metricas">
+    <div class="item-metrica">
+      <span class="rotulo-metrica">Meta</span>
+      <span class="valor-metrica-card">{{ desafio.objetivo }} {{ desafio.unidade }}</span>
+    </div>
+    <div class="item-metrica">
+      <span class="rotulo-metrica">Participantes</span>
+      <span class="valor-metrica-card">{{ desafio.participantesCount }}</span>
+    </div>
+    <div class="item-metrica">
+      <span class="rotulo-metrica">Entrada</span>
+      <span class="valor-metrica-card">{{ desafio.formato === 'caucao' ? 'R$ ' + desafio.entrada : 'Grátis' }}</span>
+    </div>
+    <div class="item-metrica">
+      <span class="rotulo-metrica">Pote</span>
+      <span class="valor-metrica-card destaque-pote">{{ desafio.pote > 0 ? 'R$ ' + desafio.pote : '—' }}</span>
+    </div>
+  </div>
+
+  <!-- Rodapé com Árbitro e Ação -->
+  <div class="rodape-desafio">
+    <div class="info-arbitro">
+      <span class="rotulo-arbitro">Árbitro:</span>
+      <span class="nome-arbitro">{{ desafio.arbitro }}</span>
+    </div>
+    <a [routerLink]="['/desafios', desafio.id]" class="botao botao-primario botao-sm">
+      Ver desafio
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14"></path>
+        <path d="m12 5 7 7-7 7"></path>
+      </svg>
+    </a>
+  </div>
+</div>

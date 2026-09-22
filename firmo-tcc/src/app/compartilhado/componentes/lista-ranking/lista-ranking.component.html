@@ -1,0 +1,20 @@
+<div class="container-lista-ranking">
+  <div class="cabecalho-lista" *ngIf="titulo">
+    <h4 class="titulo-secao-ranking">{{ titulo }}</h4>
+    <span class="total-participantes">{{ itens.length }} participantes</span>
+  </div>
+
+  <div class="itens-ranking" *ngIf="itensExibidos.length > 0; else semRanking">
+    <app-item-ranking
+      *ngFor="let item of itensExibidos"
+      [item]="item"
+      [unidade]="unidade"
+    ></app-item-ranking>
+  </div>
+
+  <ng-template #semRanking>
+    <div class="estado-vazio">
+      <p>Nenhuma atividade pontuada no ranking ainda.</p>
+    </div>
+  </ng-template>
+</div>

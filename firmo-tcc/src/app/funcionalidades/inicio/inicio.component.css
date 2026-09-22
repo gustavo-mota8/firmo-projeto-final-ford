@@ -1,0 +1,302 @@
+.secao-boas-vindas {
+  margin-bottom: 24px;
+}
+
+.titulo-saudacao {
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: var(--cor-texto-principal);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.subtitulo-saudacao {
+  font-size: 0.95rem;
+  color: var(--cor-texto-secundario);
+  max-width: 650px;
+}
+
+/* Card Destaque Atual */
+.secao-desafio-atual {
+  margin-bottom: 28px;
+}
+
+.cartao-destaque-atual {
+  background: var(--cor-superficie);
+  border: 1px solid #cbd5e1;
+  border-radius: var(--raio-borda-xl);
+  padding: 28px;
+  box-shadow: var(--sombra-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.cartao-destaque-atual::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--cor-azul-principal) 0%, var(--cor-azul-claro) 100%);
+}
+
+.topo-destaque {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.rotulo-destaque-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--cor-azul-principal);
+}
+
+.ponto-pulsante {
+  width: 8px;
+  height: 8px;
+  background-color: var(--cor-azul-principal);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+  animation: pulso 1.8s infinite;
+}
+
+@keyframes pulso {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(37, 99, 235, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+  }
+}
+
+.tags-topo {
+  display: flex;
+  gap: 8px;
+}
+
+.titulo-desafio-atual {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--cor-texto-principal);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.descricao-desafio-atual {
+  font-size: 0.9375rem;
+  color: var(--cor-texto-secundario);
+  margin-bottom: 20px;
+  max-width: 800px;
+}
+
+.container-progresso-destaque {
+  background-color: #f8fafc;
+  padding: 16px 20px;
+  border-radius: var(--raio-borda-md);
+  border: 1px solid #f1f5f9;
+  margin-bottom: 24px;
+}
+
+.grade-metricas-atual {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 16px;
+  background-color: #f8fafc;
+  border-radius: var(--raio-borda-md);
+  border: 1px solid var(--cor-borda);
+  margin-bottom: 24px;
+}
+
+.metrica-item-destaque {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rotulo-mini {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--cor-texto-secundario);
+  letter-spacing: 0.05em;
+}
+
+.valor-destaque-metrica {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--cor-texto-principal);
+}
+
+.valor-destaque-metrica.cor-azul {
+  color: var(--cor-azul-principal);
+}
+
+.valor-destaque-metrica.cor-ouro {
+  color: #b45309;
+}
+
+.valor-destaque-metrica.pequeno {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.acoes-destaque {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.botao-lg {
+  padding: 12px 24px;
+  font-size: 0.95rem;
+}
+
+/* Grade Dupla */
+.grade-dupla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.rodape-card-link {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--cor-borda);
+  text-align: right;
+}
+
+.link-simples {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--cor-azul-principal);
+}
+
+.coluna-proxima {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cartao-proxima-atividade {
+  background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+  border-color: #bfdbfe;
+}
+
+.cabecalho-proxima {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.icone-calendario {
+  font-size: 2rem;
+}
+
+.titulo-proxima {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}
+
+.subtitulo-proxima {
+  font-size: 0.8125rem;
+  color: var(--cor-texto-secundario);
+}
+
+.detalhes-proxima {
+  margin-bottom: 16px;
+  font-size: 0.875rem;
+  color: var(--cor-texto-principal);
+  line-height: 1.45;
+}
+
+.botao-bloco {
+  width: 100%;
+}
+
+.grade-estatisticas-gerais {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Seção Outros Desafios */
+.secao-outros-desafios {
+  margin-top: 16px;
+}
+
+.cabecalho-secao {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 18px;
+}
+
+.titulo-secao {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.subtitulo-secao {
+  font-size: 0.875rem;
+  color: var(--cor-texto-secundario);
+}
+
+.link-ver-todos {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--cor-azul-principal);
+}
+
+.grade-cards-desafios {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .grade-dupla {
+    grid-template-columns: 1fr;
+  }
+  .grade-cards-desafios {
+    grid-template-columns: 1fr;
+  }
+  .grade-metricas-atual {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .cartao-destaque-atual {
+    padding: 18px;
+  }
+  .titulo-desafio-atual {
+    font-size: 1.25rem;
+  }
+  .grade-estatisticas-gerais {
+    grid-template-columns: 1fr;
+  }
+  .acoes-destaque {
+    flex-direction: column;
+    width: 100%;
+  }
+  .acoes-destaque .botao {
+    width: 100%;
+  }
+}

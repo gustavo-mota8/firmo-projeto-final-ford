@@ -1,0 +1,40 @@
+.container-lista-ranking {
+  width: 100%;
+}
+
+.cabecalho-lista {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.titulo-secao-ranking {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}
+
+.total-participantes {
+  font-size: 0.8125rem;
+  color: var(--cor-texto-secundario);
+  font-weight: 500;
+}
+
+.itens-ranking {
+  display: flex;
+  flex-direction: column;
+}
+
+.estado-vazio {
+  text-align: center;
+  padding: 32px 16px;
+  background-color: #f8fafc;
+  border-radius: var(--raio-borda-md);
+  border: 1px dashed var(--cor-borda);
+}
+
+.estado-vazio p {
+  color: var(--cor-texto-mutado);
+  font-size: 0.875rem;
+}

@@ -1,0 +1,265 @@
+/* ==========================================================================
+   Firmo — Design System & Estilos Globais
+   "Seu compromisso, garantido."
+   ========================================================================== */
+
+:root {
+  /* Cores Principais */
+  --cor-azul-marinho: #0f172a;
+  --cor-grafite: #1e293b;
+  --cor-preto: #020617;
+  --cor-azul-principal: #2563eb;
+  --cor-azul-hover: #1d4ed8;
+  --cor-azul-claro: #38bdf8;
+  --cor-azul-suave: #eff6ff;
+  --cor-branco: #ffffff;
+
+  /* Feedback */
+  --cor-sucesso: #10b981;
+  --cor-sucesso-suave: #ecfdf5;
+  --cor-recompensa: #f59e0b;
+  --cor-recompensa-suave: #fffbeb;
+  --cor-erro: #ef4444;
+  --cor-erro-suave: #fef2f2;
+
+  /* Superfícies e Textos */
+  --cor-fundo: #f8fafc;
+  --cor-superficie: #ffffff;
+  --cor-borda: #e2e8f0;
+  --cor-borda-hover: #cbd5e1;
+  --cor-texto-principal: #0f172a;
+  --cor-texto-secundario: #64748b;
+  --cor-texto-mutado: #94a3b8;
+
+  /* Layout & Espaçamento */
+  --largura-sidebar: 260px;
+  --altura-cabecalho: 68px;
+  --altura-navegacao-mobile: 64px;
+  --raio-borda-sm: 8px;
+  --raio-borda-md: 12px;
+  --raio-borda-lg: 16px;
+  --raio-borda-xl: 20px;
+
+  /* Sombras Sutis */
+  --sombra-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --sombra-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --sombra-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+
+  /* Transições */
+  --transicao-rapida: all 0.2s ease;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto-principal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Tipografia Base */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--cor-texto-principal);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+p {
+  color: var(--cor-texto-secundario);
+  line-height: 1.5;
+}
+
+a {
+  color: var(--cor-azul-principal);
+  text-decoration: none;
+  transition: var(--transicao-rapida);
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* Utilitários de Badges */
+.emblema {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.emblema-grupo {
+  background-color: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+.emblema-caucao {
+  background-color: var(--cor-recompensa-suave);
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.emblema-gratuito {
+  background-color: var(--cor-azul-suave);
+  color: var(--cor-azul-principal);
+  border: 1px solid #bfdbfe;
+}
+
+.emblema-pendente {
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.emblema-aprovada {
+  background-color: var(--cor-sucesso-suave);
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.emblema-rejeitada {
+  background-color: var(--cor-erro-suave);
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* Botões */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--raio-borda-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: var(--transicao-rapida);
+  text-align: center;
+  text-decoration: none;
+}
+
+.botao:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.botao-primario {
+  background-color: var(--cor-azul-principal);
+  color: var(--cor-branco);
+}
+
+.botao-primario:hover:not(:disabled) {
+  background-color: var(--cor-azul-hover);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.botao-secundario {
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto-principal);
+  border-color: var(--cor-borda);
+}
+
+.botao-secundario:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  border-color: var(--cor-borda-hover);
+}
+
+.botao-sucesso {
+  background-color: var(--cor-sucesso);
+  color: var(--cor-branco);
+}
+
+.botao-sucesso:hover:not(:disabled) {
+  background-color: #059669;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.botao-perigo {
+  background-color: var(--cor-erro);
+  color: var(--cor-branco);
+}
+
+.botao-perigo:hover:not(:disabled) {
+  background-color: #dc2626;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+
+/* Cards Base */
+.cartao-padrao {
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-borda-lg);
+  padding: 20px;
+  box-shadow: var(--sombra-sm);
+  transition: var(--transicao-rapida);
+}
+
+.cartao-padrao:hover {
+  border-color: var(--cor-borda-hover);
+  box-shadow: var(--sombra-md);
+}
+
+/* Campos de Formulário */
+.campo-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.campo-formulario label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--cor-texto-principal);
+}
+
+.campo-formulario input,
+.campo-formulario select,
+.campo-formulario textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--raio-borda-md);
+  border: 1px solid var(--cor-borda);
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto-principal);
+  font-size: 0.9375rem;
+  transition: var(--transicao-rapida);
+  outline: none;
+}
+
+.campo-formulario input:focus,
+.campo-formulario select:focus,
+.campo-formulario textarea:focus {
+  border-color: var(--cor-azul-principal);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Container de Página */
+.container-pagina {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+@media (max-width: 768px) {
+  .container-pagina {
+    padding: 16px;
+    padding-bottom: 80px; /* espaço para navegação mobile */
+  }
+}

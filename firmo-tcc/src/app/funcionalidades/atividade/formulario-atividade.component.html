@@ -1,0 +1,165 @@
+<div class="container-pagina">
+  <div class="cabecalho-atividade">
+    <a [routerLink]="['/desafios', desafioId]" class="link-voltar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"></path>
+      </svg>
+      Voltar para o desafio
+    </a>
+
+    <h1 class="titulo-pagina">Registrar Atividade</h1>
+    <p class="subtitulo-pagina" *ngIf="desafio">
+      Submetendo para: <strong>{{ desafio.nome }}</strong> (Árbitro: {{ desafio.arbitro }})
+    </p>
+  </div>
+
+  <!-- ESTADO DE SUCESSO: ATIVIDADE ENVIADA -->
+  <div class="cartao-padrao cartao-sucesso-envio" *ngIf="atividadeEnviada; else formularioTemplate">
+    <div class="icone-sucesso-grande">⏳</div>
+    <h2 class="titulo-enviado">Atividade enviada</h2>
+
+    <div class="caixa-status-validacao">
+      <span class="rotulo-status">Status:</span>
+      <span class="emblema emblema-pendente">Em validação</span>
+    </div>
+
+    <p class="texto-aguardando">
+      Aguardando análise do árbitro <strong>{{ desafio?.arbitro || 'Carlos Almeida' }}</strong>.
+    </p>
+
+    <div class="resumo-envio-card">
+      <div class="item-resumo">
+        <span>Atividade:</span>
+        <strong>{{ atividadeEnviada.tipo }}</strong>
+      </div>
+      <div class="item-resumo">
+        <span>Distância:</span>
+        <strong>{{ atividadeEnviada.distancia }} km</strong>
+      </div>
+      <div class="item-resumo">
+        <span>Tempo:</span>
+        <strong>{{ atividadeEnviada.tempo }}</strong>
+      </div>
+      <div class="item-resumo">
+        <span>Código de Validação:</span>
+        <strong class="codigo-destaque">{{ atividadeEnviada.codigoValidacao }}</strong>
+      </div>
+    </div>
+
+    <div class="acoes-pos-envio">
+      <a routerLink="/validacao" class="botao botao-sucesso botao-lg">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polygon points="10 8 16 12 10 16 10 8"></polygon>
+        </svg>
+        Ir para tela do Árbitro para validar
+      </a>
+
+      <a [routerLink]="['/desafios', desafioId]" class="botao botao-secundario">
+        Voltar aos detalhes do desafio
+      </a>
+    </div>
+  </div>
+
+  <!-- FORMULÁRIO DE REGISTRO -->
+  <ng-template #formularioTemplate>
+    <div class="cartao-padrao container-formulario">
+      <form (ngSubmit)="submeterAtividade()">
+        <!-- Tipo de Atividade -->
+        <div class="campo-formulario">
+          <label for="tipoAtividade">Atividade</label>
+          <select id="tipoAtividade" name="tipoAtividade" [(ngModel)]="tipoAtividade">
+            <option *ngFor="let t of tiposDisponiveis" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+
+        <div class="grade-campos-dupla">
+          <!-- Distância -->
+          <div class="campo-formulario">
+            <label for="distancia">Distância (km)</label>
+            <input
+              id="distancia"
+              name="distancia"
+              type="number"
+              step="0.1"
+              min="0.1"
+              [(ngModel)]="distancia"
+              required
+              placeholder="Ex: 5"
+            />
+          </div>
+
+          <!-- Tempo -->
+          <div class="campo-formulario">
+            <label for="tempo">Tempo</label>
+            <input
+              id="tempo"
+              name="tempo"
+              type="text"
+              [(ngModel)]="tempo"
+              required
+              placeholder="Ex: 32 min"
+            />
+          </div>
+        </div>
+
+        <!-- Comprovação (Upload / Mock de GPS) -->
+        <div class="campo-formulario">
+          <label>Comprovação (Print do GPS / App de corrida)</label>
+          <div class="area-upload-arquivo">
+            <input
+              type="file"
+              id="inputArquivo"
+              accept="image/*"
+              (change)="aoSelecionarArquivo($event)"
+              class="input-file-escondido"
+            />
+            <label for="inputArquivo" class="rotulo-dropzone">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+                <circle cx="9" cy="9" r="2"></circle>
+                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+              </svg>
+              <span class="texto-upload-principal">Clique para selecionar imagem ou print do GPS</span>
+              <span class="nome-arquivo-selecionado">Arquivo atual: {{ nomeArquivoComprovacao }}</span>
+            </label>
+          </div>
+          <small class="dica-upload">
+            * Se não selecionar nenhum arquivo, uma comprovação mock simulando Strava/GPS com o código de validação será utilizada automaticamente.
+          </small>
+        </div>
+
+        <!-- Código de Validação -->
+        <div class="campo-formulario">
+          <div class="cabecalho-campo-codigo">
+            <label for="codigoValidacao">Código de Validação</label>
+            <button type="button" class="botao-gerar-codigo" (click)="gerarNovoCodigo()">
+              Gerar novo código
+            </button>
+          </div>
+          <input
+            id="codigoValidacao"
+            name="codigoValidacao"
+            type="text"
+            [(ngModel)]="codigoValidacao"
+            required
+            maxlength="6"
+            placeholder="Ex: 4821"
+            class="input-codigo"
+          />
+          <small class="dica-campo">
+            Este código anti-fraude deve estar visível na foto ou título do treino para verificação pelo árbitro.
+          </small>
+        </div>
+
+        <!-- Botão Submeter -->
+        <div class="rodape-submissao">
+          <button type="submit" class="botao botao-primario botao-lg" [disabled]="enviando">
+            <span *ngIf="!enviando">Enviar atividade</span>
+            <span *ngIf="enviando">Enviando...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</div>

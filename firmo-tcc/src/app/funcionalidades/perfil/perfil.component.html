@@ -1,0 +1,125 @@
+<div class="container-pagina" *ngIf="usuario">
+  <!-- Cabeçalho do Perfil -->
+  <div class="cartao-padrao cartao-topo-perfil">
+    <div class="bloco-avatar-info">
+      <img [src]="usuario.avatar" [alt]="usuario.nome" class="avatar-perfil-grande" />
+      <div class="dados-usuario-perfil">
+        <div class="tags-perfil">
+          <span class="emblema emblema-aprovada">Atleta Firmo Verificado</span>
+          <span class="emblema emblema-grupo">ID #{{ usuario.id }}</span>
+        </div>
+        <h1 class="nome-usuario-titulo">{{ usuario.nome }}</h1>
+        <p class="email-usuario">{{ usuario.email }}</p>
+        <span class="slogan-usuario">"Seu compromisso, garantido."</span>
+      </div>
+    </div>
+
+    <div class="acoes-perfil-topo">
+      <button class="botao botao-secundario" (click)="reiniciarDadosMock()" title="Reinicia o localStorage para o estado original do MVP">
+        🔄 Reiniciar Dados do MVP
+      </button>
+    </div>
+  </div>
+
+  <!-- Métricas do Perfil -->
+  <div class="grade-metricas-perfil">
+    <app-cartao-estatistica
+      titulo="Pontos Firmo"
+      [valor]="usuario.pontos"
+      subtitulo="Score acumulado"
+      icone="trofeu"
+      tipoDestaque="azul"
+    ></app-cartao-estatistica>
+
+    <app-cartao-estatistica
+      titulo="Desafios Concluídos"
+      [valor]="usuario.desafiosConcluidos"
+      subtitulo="100% cumpridos"
+      icone="check"
+      tipoDestaque="sucesso"
+    ></app-cartao-estatistica>
+
+    <app-cartao-estatistica
+      titulo="Atividades Validadas"
+      [valor]="usuario.atividadesValidadas"
+      subtitulo="Aprovadas por árbitro"
+      icone="alvo"
+    ></app-cartao-estatistica>
+
+    <app-cartao-estatistica
+      titulo="Distância Total"
+      [valor]="usuario.totalKm + ' km'"
+      subtitulo="Registros por GPS"
+      icone="fogo"
+      tipoDestaque="ouro"
+    ></app-cartao-estatistica>
+  </div>
+
+  <!-- Duas Colunas: Desafios Inscritos e Histórico de Atividades -->
+  <div class="grade-dupla-perfil">
+    <!-- Coluna 1: Meus Desafios -->
+    <div class="cartao-padrao">
+      <div class="cabecalho-secao-perfil">
+        <h3>Meus Desafios Ativos ({{ meusDesafios.length }})</h3>
+        <a routerLink="/desafios" class="link-simples">Ver mais</a>
+      </div>
+
+      <div class="lista-desafios-perfil" *ngIf="meusDesafios.length > 0; else semDesafios">
+        <div class="item-desafio-perfil" *ngFor="let d of meusDesafios">
+          <div class="info-item-desafio">
+            <strong>{{ d.nome }}</strong>
+            <span class="meta-item-desafio">{{ d.progressoUsuario }} km de {{ d.objetivo }} km</span>
+          </div>
+          <a [routerLink]="['/desafios', d.id]" class="botao botao-secundario botao-sm">
+            Acessar
+          </a>
+        </div>
+      </div>
+
+      <ng-template #semDesafios>
+        <p class="texto-vazio">Você ainda não assumiu nenhum compromisso.</p>
+      </ng-template>
+    </div>
+
+    <!-- Coluna 2: Histórico de Atividades -->
+    <div class="cartao-padrao">
+      <div class="cabecalho-secao-perfil">
+        <h3>Histórico de Atividades ({{ minhasAtividades.length }})</h3>
+        <a routerLink="/validacao" class="link-simples">Validações</a>
+      </div>
+
+      <div class="lista-atividades-perfil" *ngIf="minhasAtividades.length > 0; else semAtividades">
+        <div class="item-historico-perfil" *ngFor="let a of minhasAtividades">
+          <div class="icone-atividade-tipo">🏃</div>
+          <div class="info-historico">
+            <div class="linha-topo-hist">
+              <strong>{{ a.tipo }} — {{ a.distancia }} km</strong>
+              <span
+                class="emblema"
+                [ngClass]="{
+                  'emblema-pendente': a.status === 'pendente',
+                  'emblema-aprovada': a.status === 'aprovada',
+                  'emblema-rejeitada': a.status === 'rejeitada'
+                }"
+              >
+                {{ a.status === 'pendente' ? 'Em validação' : (a.status === 'aprovada' ? 'Aprovada' : 'Rejeitada') }}
+              </span>
+            </div>
+            <div class="linha-detalhe-hist">
+              <span>⏱ {{ a.tempo }}</span>
+              <span>• Cód: {{ a.codigoValidacao }}</span>
+              <span>• {{ a.dataEnvio }}</span>
+            </div>
+            <div class="motivo-rejeicao-perfil" *ngIf="a.motivoRejeicao">
+              Motivo: {{ a.motivoRejeicao }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #semAtividades>
+        <p class="texto-vazio">Nenhuma atividade enviada ainda.</p>
+      </ng-template>
+    </div>
+  </div>
+</div>

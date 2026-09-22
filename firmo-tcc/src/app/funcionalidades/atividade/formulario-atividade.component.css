@@ -1,0 +1,208 @@
+.cabecalho-atividade {
+  margin-bottom: 24px;
+}
+
+.link-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--cor-texto-secundario);
+  margin-bottom: 12px;
+  text-decoration: none;
+}
+
+.link-voltar:hover {
+  color: var(--cor-azul-principal);
+}
+
+.titulo-pagina {
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: var(--cor-texto-principal);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.subtitulo-pagina {
+  font-size: 0.95rem;
+  color: var(--cor-texto-secundario);
+}
+
+.container-formulario {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.grade-campos-dupla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.area-upload-arquivo {
+  border: 2px dashed #cbd5e1;
+  border-radius: var(--raio-borda-md);
+  padding: 20px;
+  text-align: center;
+  background-color: #f8fafc;
+  cursor: pointer;
+  transition: var(--transicao-rapida);
+}
+
+.area-upload-arquivo:hover {
+  border-color: var(--cor-azul-principal);
+  background-color: var(--cor-azul-suave);
+}
+
+.input-file-escondido {
+  display: none;
+}
+
+.rotulo-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.texto-upload-principal {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--cor-texto-principal);
+}
+
+.nome-arquivo-selecionado {
+  font-size: 0.75rem;
+  color: var(--cor-azul-principal);
+  font-weight: 500;
+}
+
+.dica-upload {
+  font-size: 0.75rem;
+  color: var(--cor-texto-mutado);
+  margin-top: 6px;
+  display: block;
+}
+
+.cabecalho-campo-codigo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.botao-gerar-codigo {
+  background: none;
+  border: none;
+  color: var(--cor-azul-principal);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.input-codigo {
+  font-size: 1.25rem !important;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-align: center;
+  color: var(--cor-azul-principal) !important;
+}
+
+.dica-campo {
+  font-size: 0.75rem;
+  color: var(--cor-texto-mutado);
+  margin-top: 4px;
+}
+
+.rodape-submissao {
+  margin-top: 24px;
+}
+
+.rodape-submissao button {
+  width: 100%;
+}
+
+/* Sucesso do envio */
+.cartao-sucesso-envio {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 40px 32px;
+}
+
+.icone-sucesso-grande {
+  font-size: 3.5rem;
+  margin-bottom: 12px;
+}
+
+.titulo-enviado {
+  font-size: 1.625rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.caixa-status-validacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.rotulo-status {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--cor-texto-secundario);
+}
+
+.texto-aguardando {
+  font-size: 0.9375rem;
+  color: var(--cor-texto-secundario);
+  margin-bottom: 24px;
+}
+
+.resumo-envio-card {
+  background-color: #f8fafc;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-borda-md);
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.item-resumo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--cor-texto-secundario);
+}
+
+.item-resumo strong {
+  color: var(--cor-texto-principal);
+}
+
+.codigo-destaque {
+  color: var(--cor-azul-principal) !important;
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.acoes-pos-envio {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (max-width: 500px) {
+  .grade-campos-dupla {
+    grid-template-columns: 1fr;
+  }
+}

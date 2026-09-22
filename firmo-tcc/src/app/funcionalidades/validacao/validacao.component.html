@@ -1,0 +1,216 @@
+<div class="container-pagina">
+  <!-- Cabeçalho do Árbitro -->
+  <div class="cabecalho-arbitro-secao">
+    <div class="info-perfil-arbitro">
+      <div class="avatar-arbitro-circulo">⚖️</div>
+      <div>
+        <div class="tag-arbitro-oficial">PAINEL DO ÁRBITRO OFICIAL</div>
+        <h1 class="titulo-pagina">Validação de Atividades</h1>
+        <p class="subtitulo-pagina">
+          Árbitro credenciado: <strong>Carlos Almeida</strong> — Garanta o compromisso e a integridade da plataforma.
+        </p>
+      </div>
+    </div>
+
+    <div class="badge-pendencias-arbitro">
+      <span class="numero-pendencias">{{ atividadesPendentes.length }}</span>
+      <span class="texto-pendencias">pendente(s) de análise</span>
+    </div>
+  </div>
+
+  <!-- Toast / Banner de Feedback de Aprovação / Rejeição -->
+  <div
+    class="banner-feedback"
+    *ngIf="mensagemFeedback"
+    [class.sucesso]="mensagemFeedback.tipo === 'sucesso'"
+    [class.erro]="mensagemFeedback.tipo === 'erro'"
+  >
+    <div class="icone-feedback">
+      <span *ngIf="mensagemFeedback.tipo === 'sucesso'">✅</span>
+      <span *ngIf="mensagemFeedback.tipo === 'erro'">❌</span>
+    </div>
+    <div class="conteudo-feedback">
+      <strong>{{ mensagemFeedback.titulo }}</strong>
+      <p>{{ mensagemFeedback.detalhe }}</p>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 1: ATIVIDADES PENDENTES -->
+  <section class="secao-atividades-pendentes">
+    <h2 class="subtitulo-secao-validacao">
+      Atividades Aguardando Validação ({{ atividadesPendentes.length }})
+    </h2>
+
+    <div class="grade-atividades-pendentes" *ngIf="atividadesPendentes.length > 0; else semPendentes">
+      <div class="cartao-padrao card-validacao" *ngFor="let atividade of atividadesPendentes">
+        <div class="topo-card-validacao">
+          <div class="status-pendente-chip">
+            <span class="bolinha-amarela"></span>
+            Atividade pendente
+          </div>
+          <span class="data-envio-validacao">{{ atividade.dataEnvio }}</span>
+        </div>
+
+        <div class="corpo-card-validacao">
+          <!-- Participante -->
+          <div class="linha-dado">
+            <span class="rotulo-dado">Participante:</span>
+            <strong class="valor-destaque-participante">{{ atividade.participante }}</strong>
+          </div>
+
+          <!-- Atividade -->
+          <div class="linha-dado">
+            <span class="rotulo-dado">Atividade:</span>
+            <span class="valor-dado">{{ atividade.tipo }}</span>
+          </div>
+
+          <!-- Métricas -->
+          <div class="grade-metricas-validacao">
+            <div class="caixa-metrica-validacao">
+              <span class="rotulo-dado">Distância:</span>
+              <strong class="metrica-numero">{{ atividade.distancia }} km</strong>
+            </div>
+
+            <div class="caixa-metrica-validacao">
+              <span class="rotulo-dado">Tempo:</span>
+              <strong class="metrica-numero">{{ atividade.tempo }}</strong>
+            </div>
+
+            <div class="caixa-metrica-validacao">
+              <span class="rotulo-dado">Código:</span>
+              <strong class="metrica-numero codigo-anti-fraude">{{ atividade.codigoValidacao }}</strong>
+            </div>
+          </div>
+
+          <!-- Prévia da Evidência / Imagem -->
+          <div class="bloco-evidencia">
+            <div class="cabecalho-evidencia">
+              <span class="rotulo-dado">Comprovação:</span>
+              <button
+                type="button"
+                class="botao-expandir"
+                (click)="verEvidencia(atividade.comprovacao)"
+              >
+                [ visualizar evidência ]
+              </button>
+            </div>
+
+            <div class="miniatura-evidencia" (click)="verEvidencia(atividade.comprovacao)">
+              <img [src]="atividade.comprovacao" alt="Comprovação de GPS" />
+              <div class="sobreposicao-hover">
+                <span>Clique para ampliar 🔍</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Se estiver no processo de rejeição desta atividade -->
+        <div class="caixa-motivo-rejeicao" *ngIf="atividadeRejeitando?.id === atividade.id">
+          <label for="motivoRejeicao">Motivo da rejeição:</label>
+          <input
+            id="motivoRejeicao"
+            type="text"
+            [(ngModel)]="motivoRejeicao"
+            placeholder="Ex: A comprovação não está clara"
+          />
+          <div class="botoes-rejeicao-confirmar">
+            <button class="botao botao-perigo" (click)="confirmarRejeicao()">
+              Confirmar rejeição
+            </button>
+            <button class="botao botao-secundario" (click)="cancelarRejeicao()">
+              Cancelar
+            </button>
+          </div>
+        </div>
+
+        <!-- Ações do Árbitro -->
+        <div class="rodape-acoes-validacao" *ngIf="atividadeRejeitando?.id !== atividade.id">
+          <button class="botao botao-sucesso botao-lg botao-flex" (click)="aprovar(atividade)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Aprovar atividade
+          </button>
+
+          <button class="botao botao-perigo botao-flex" (click)="iniciarRejeicao(atividade)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            Rejeitar atividade
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #semPendentes>
+      <div class="cartao-padrao estado-sem-pendencias">
+        <div class="icone-tudo-ok">✨</div>
+        <h3>Tudo em dia!</h3>
+        <p>Não há atividades pendentes para análise neste momento.</p>
+        <p class="dica-teste">
+          Para testar o fluxo completo de aprovação, vá até <a routerLink="/desafios/1/atividade">Registrar Atividade</a> e submeta um novo treino!
+        </p>
+      </div>
+    </ng-template>
+  </section>
+
+  <!-- SEÇÃO 2: HISTÓRICO DE VALIDAÇÕES RECENTES -->
+  <section class="secao-historico-validacoes" *ngIf="atividadesAvaliadas.length > 0">
+    <h3 class="subtitulo-secao-validacao">Histórico de Atividades Avaliadas ({{ atividadesAvaliadas.length }})</h3>
+
+    <div class="tabela-container cartao-padrao">
+      <table class="tabela-historico">
+        <thead>
+          <tr>
+            <th>Participante</th>
+            <th>Atividade</th>
+            <th>Distância</th>
+            <th>Tempo</th>
+            <th>Código</th>
+            <th>Status</th>
+            <th>Detalhe / Motivo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of atividadesAvaliadas">
+            <td><strong>{{ a.participante }}</strong></td>
+            <td>{{ a.tipo }}</td>
+            <td>{{ a.distancia }} km</td>
+            <td>{{ a.tempo }}</td>
+            <td><code>{{ a.codigoValidacao }}</code></td>
+            <td>
+              <span
+                class="emblema"
+                [ngClass]="a.status === 'aprovada' ? 'emblema-aprovada' : 'emblema-rejeitada'"
+              >
+                {{ a.status === 'aprovada' ? '✓ Aprovada' : '✕ Rejeitada' }}
+              </span>
+            </td>
+            <td>
+              <span *ngIf="a.status === 'aprovada'" class="texto-sucesso-tabela">Pontos e ranking creditados</span>
+              <span *ngIf="a.status === 'rejeitada'" class="texto-motivo-tabela">{{ a.motivoRejeicao }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MODAL DE VISUALIZAÇÃO AMPLIADA DA EVIDÊNCIA -->
+  <div class="modal-backdrop" *ngIf="modalEvidenciaAberta" (click)="fecharModalEvidencia()">
+    <div class="modal-conteudo-evidencia" (click)="$event.stopPropagation()">
+      <div class="modal-cabecalho">
+        <h3>Comprovação do Treino — Visão do Árbitro</h3>
+        <button class="botao-fechar-modal" (click)="fecharModalEvidencia()">✕</button>
+      </div>
+      <div class="modal-corpo-img">
+        <img [src]="evidenciaSelecionada" alt="Evidência ampliada" />
+      </div>
+      <div class="modal-rodape">
+        <p class="nota-modal">Código anti-fraude e dados de telemetria verificados pelo sistema Firmo.</p>
+        <button class="botao botao-primario" (click)="fecharModalEvidencia()">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>

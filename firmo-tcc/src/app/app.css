@@ -1,0 +1,25 @@
+.layout-aplicacao {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--cor-fundo);
+}
+
+.corpo-aplicacao {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+.conteudo-principal {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  background-color: var(--cor-fundo);
+}
+
+@media (max-width: 768px) {
+  .conteudo-principal {
+    padding-bottom: var(--altura-navegacao-mobile);
+  }
+}

@@ -1,0 +1,81 @@
+.cartao-estatistica {
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-borda-lg);
+  padding: 18px 20px;
+  box-shadow: var(--sombra-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: var(--transicao-rapida);
+}
+
+.cartao-estatistica:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-md);
+}
+
+.cabecalho-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.titulo-metrica {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--cor-texto-secundario);
+}
+
+.icone-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--raio-borda-md);
+  background-color: #f1f5f9;
+  color: var(--cor-texto-secundario);
+}
+
+.valor-metrica {
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: var(--cor-texto-principal);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.subtitulo-metrica {
+  font-size: 0.8125rem;
+  color: var(--cor-texto-mutado);
+  margin-top: 6px;
+}
+
+/* Variantes */
+.destaque-azul .icone-container {
+  background-color: var(--cor-azul-suave);
+  color: var(--cor-azul-principal);
+}
+.destaque-azul .valor-metrica {
+  color: var(--cor-azul-principal);
+}
+
+.destaque-ouro .icone-container {
+  background-color: var(--cor-recompensa-suave);
+  color: #d97706;
+}
+.destaque-ouro .valor-metrica {
+  color: #b45309;
+}
+
+.destaque-sucesso .icone-container {
+  background-color: var(--cor-sucesso-suave);
+  color: var(--cor-sucesso);
+}
+.destaque-sucesso .valor-metrica {
+  color: var(--cor-sucesso);
+}

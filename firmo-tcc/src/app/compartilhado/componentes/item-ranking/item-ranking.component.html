@@ -1,0 +1,30 @@
+<div
+  class="linha-ranking"
+  [class.voce]="item.ehUsuarioAtual"
+  [class.top1]="item.posicao === 1"
+  [class.top2]="item.posicao === 2"
+  [class.top3]="item.posicao === 3"
+>
+  <div class="posicao-badge">
+    <span *ngIf="item.posicao === 1" class="medalha ouro">🥇 1º</span>
+    <span *ngIf="item.posicao === 2" class="medalha prata">🥈 2º</span>
+    <span *ngIf="item.posicao === 3" class="medalha bronze">🥉 3º</span>
+    <span *ngIf="item.posicao > 3" class="posicao-numero">#{{ item.posicao }}</span>
+  </div>
+
+  <div class="perfil-participante">
+    <img [src]="item.avatar" [alt]="item.nome" class="avatar-ranking" />
+    <div class="info-nome">
+      <span class="nome-participante">
+        {{ item.nome }}
+        <span *ngIf="item.ehUsuarioAtual" class="tag-voce">(Você)</span>
+      </span>
+      <span class="pontos-participante">{{ item.pontos }} pts</span>
+    </div>
+  </div>
+
+  <div class="distancia-destaque">
+    <span class="valor-distancia">{{ item.distancia }}</span>
+    <span class="unidade-distancia">{{ unidade }}</span>
+  </div>
+</div>

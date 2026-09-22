@@ -1,0 +1,203 @@
+.cartao-topo-perfil {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.bloco-avatar-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.avatar-perfil-grande {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--cor-azul-principal);
+  box-shadow: var(--sombra-md);
+}
+
+.dados-usuario-perfil {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tags-perfil {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.nome-usuario-titulo {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--cor-texto-principal);
+}
+
+.email-usuario {
+  font-size: 0.875rem;
+  color: var(--cor-texto-secundario);
+}
+
+.slogan-usuario {
+  font-size: 0.75rem;
+  color: var(--cor-azul-principal);
+  font-weight: 600;
+  font-style: italic;
+}
+
+.grade-metricas-perfil {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.grade-dupla-perfil {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.cabecalho-secao-perfil {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.cabecalho-secao-perfil h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.link-simples {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--cor-azul-principal);
+}
+
+.lista-desafios-perfil {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-desafio-perfil {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background-color: #f8fafc;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-borda-md);
+}
+
+.info-item-desafio {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.info-item-desafio strong {
+  font-size: 0.9375rem;
+  color: var(--cor-texto-principal);
+}
+
+.meta-item-desafio {
+  font-size: 0.75rem;
+  color: var(--cor-texto-secundario);
+}
+
+.lista-atividades-perfil {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-historico-perfil {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background-color: #f8fafc;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-borda-md);
+}
+
+.icone-atividade-tipo {
+  font-size: 1.25rem;
+}
+
+.info-historico {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.linha-topo-hist {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.linha-detalhe-hist {
+  display: flex;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: var(--cor-texto-mutado);
+}
+
+.motivo-rejeicao-perfil {
+  font-size: 0.75rem;
+  color: var(--cor-erro);
+  background: var(--cor-erro-suave);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.texto-vazio {
+  text-align: center;
+  padding: 24px;
+  color: var(--cor-texto-mutado);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 900px) {
+  .grade-metricas-perfil {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grade-dupla-perfil {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .bloco-avatar-info {
+    flex-direction: column;
+    text-align: center;
+  }
+  .tags-perfil {
+    justify-content: center;
+  }
+  .cartao-topo-perfil {
+    justify-content: center;
+  }
+  .acoes-perfil-topo {
+    width: 100%;
+  }
+  .acoes-perfil-topo button {
+    width: 100%;
+  }
+}

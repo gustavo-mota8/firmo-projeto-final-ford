@@ -1,0 +1,211 @@
+<div class="container-pagina">
+  <div class="cabecalho-criar">
+    <a routerLink="/desafios" class="link-voltar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"></path>
+      </svg>
+      Voltar para desafios
+    </a>
+    <h1 class="titulo-pagina">Criar Desafio</h1>
+    <p class="subtitulo-pagina">
+      Defina as regras, objetivo, premiação e o árbitro responsável pelo seu desafio.
+    </p>
+  </div>
+
+  <div class="alerta-sucesso" *ngIf="mensagemSucesso">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+    <span>{{ mensagemSucesso }}</span>
+  </div>
+
+  <div class="grade-criar-desafio">
+    <!-- Formulário -->
+    <div class="cartao-padrao coluna-formulario">
+      <form (ngSubmit)="salvarDesafio()" class="formulario-desafio">
+        <!-- Nome -->
+        <div class="campo-formulario">
+          <label for="nome">Nome do Desafio</label>
+          <input
+            id="nome"
+            name="nome"
+            type="text"
+            [(ngModel)]="nome"
+            required
+            placeholder="Ex: Corrida 50K — Setembro"
+          />
+        </div>
+
+        <!-- Descrição -->
+        <div class="campo-formulario">
+          <label for="descricao">Descrição e Regras Gerais</label>
+          <textarea
+            id="descricao"
+            name="descricao"
+            rows="2"
+            [(ngModel)]="descricao"
+            placeholder="Ex: Supere seus limites correndo 50 km com comprovação via GPS..."
+          ></textarea>
+        </div>
+
+        <!-- Tipo e Formato em 2 colunas -->
+        <div class="grade-campos-dupla">
+          <!-- Tipo -->
+          <div class="campo-formulario">
+            <label>Tipo de Participação</label>
+            <div class="opcoes-radio">
+              <label class="item-radio" [class.selecionado]="tipo === 'individual'">
+                <input
+                  type="radio"
+                  name="tipo"
+                  value="individual"
+                  [(ngModel)]="tipo"
+                />
+                <span>Individual</span>
+              </label>
+              <label class="item-radio" [class.selecionado]="tipo === 'grupo'">
+                <input
+                  type="radio"
+                  name="tipo"
+                  value="grupo"
+                  [(ngModel)]="tipo"
+                />
+                <span>Grupo</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Formato -->
+          <div class="campo-formulario">
+            <label>Formato Financeiro</label>
+            <div class="opcoes-radio">
+              <label class="item-radio" [class.selecionado]="formato === 'gratuito'">
+                <input
+                  type="radio"
+                  name="formato"
+                  value="gratuito"
+                  [(ngModel)]="formato"
+                />
+                <span>Gratuito</span>
+              </label>
+              <label class="item-radio" [class.selecionado]="formato === 'caucao'">
+                <input
+                  type="radio"
+                  name="formato"
+                  value="caucao"
+                  [(ngModel)]="formato"
+                />
+                <span>Com entrada</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Entrada e Objetivo -->
+        <div class="grade-campos-dupla">
+          <!-- Entrada -->
+          <div class="campo-formulario" *ngIf="formato === 'caucao'">
+            <label for="entrada">Valor da Entrada (R$)</label>
+            <input
+              id="entrada"
+              name="entrada"
+              type="number"
+              min="5"
+              step="5"
+              [(ngModel)]="entrada"
+              required
+            />
+          </div>
+
+          <!-- Objetivo -->
+          <div class="campo-formulario">
+            <label for="objetivo">Objetivo (km)</label>
+            <input
+              id="objetivo"
+              name="objetivo"
+              type="number"
+              min="1"
+              [(ngModel)]="objetivo"
+              required
+              placeholder="Ex: 50"
+            />
+          </div>
+        </div>
+
+        <!-- Duração e Premiação -->
+        <div class="grade-campos-dupla">
+          <!-- Duração -->
+          <div class="campo-formulario">
+            <label for="duracao">Duração</label>
+            <select id="duracao" name="duracao" [(ngModel)]="duracao">
+              <option value="7 dias">7 dias (1 semana)</option>
+              <option value="15 dias">15 dias</option>
+              <option value="30 dias">30 dias (1 mês)</option>
+              <option value="60 dias">60 dias</option>
+            </select>
+          </div>
+
+          <!-- Premiação -->
+          <div class="campo-formulario">
+            <label for="premiacao">Premiação</label>
+            <select id="premiacao" name="premiacao" [(ngModel)]="premiacao">
+              <option value="Top 3">Top 3 do Ranking</option>
+              <option value="Top 5">Top 5 do Ranking</option>
+              <option value="Devolução de 100% da Caução">Devolução de 100% da Caução</option>
+              <option value="Medalha Digital">Medalha Digital</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Árbitro -->
+        <div class="campo-formulario">
+          <label for="arbitro">Árbitro Oficial Credenciado</label>
+          <select id="arbitro" name="arbitro" [(ngModel)]="arbitro">
+            <option *ngFor="let a of arbitrosDisponiveis" [value]="a">{{ a }}</option>
+          </select>
+          <small class="dica-campo">O árbitro será responsável por aprovar ou rejeitar comprovações deste desafio.</small>
+        </div>
+
+        <!-- Pote Estimado Resumo -->
+        <div class="painel-pote-estimado" *ngIf="formato === 'caucao'">
+          <div class="info-pote">
+            <span class="rotulo-pote">Pote estimado</span>
+            <span class="valor-pote">R$ {{ poteEstimado }}</span>
+          </div>
+          <small class="descricao-pote">
+            Baseado em {{ tipo === 'grupo' ? '20' : '1' }} participante(s) com entrada de R$ {{ entrada }}.
+          </small>
+        </div>
+
+        <!-- Botão de Criação -->
+        <div class="rodape-acoes">
+          <button type="submit" class="botao botao-primario botao-lg" [disabled]="criando">
+            <span *ngIf="!criando">Criar desafio</span>
+            <span *ngIf="criando">Criando desafio...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Prévia Dinâmica -->
+    <div class="coluna-previa">
+      <div class="topo-previa">
+        <span class="rotulo-previa">PRÉVIA DO DESAFIO</span>
+        <span class="dica-previa">Atualização em tempo real</span>
+      </div>
+
+      <app-cartao-desafio
+        [desafio]="previaDesafio"
+        [mostrarProgresso]="false"
+      ></app-cartao-desafio>
+
+      <div class="cartao-padrao cartao-nota-conceito">
+        <h5>💡 Como funciona o compromisso?</h5>
+        <p>
+          Ao criar um desafio, você estabelece um pré-comprometimento concreto. Os participantes validam seus treinos através do envio de comprovações oficiais avaliadas por <strong>{{ arbitro }}</strong>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

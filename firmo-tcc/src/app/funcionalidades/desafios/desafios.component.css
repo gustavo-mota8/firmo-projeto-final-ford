@@ -1,0 +1,128 @@
+.cabecalho-pagina-desafios {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.titulo-pagina {
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: var(--cor-texto-principal);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.subtitulo-pagina {
+  font-size: 0.95rem;
+  color: var(--cor-texto-secundario);
+}
+
+.barra-filtros {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.grupo-botoes-filtro {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.botao-filtro {
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: var(--transicao-rapida);
+}
+
+.botao-filtro:hover {
+  border-color: #cbd5e1;
+  color: var(--cor-texto-principal);
+}
+
+.botao-filtro.ativo {
+  background-color: var(--cor-azul-principal);
+  color: #ffffff;
+  border-color: var(--cor-azul-principal);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+.campo-busca {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  padding: 6px 14px;
+  border-radius: var(--raio-borda-md);
+  min-width: 260px;
+  color: var(--cor-texto-mutado);
+}
+
+.campo-busca input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.875rem;
+  color: var(--cor-texto-principal);
+  width: 100%;
+}
+
+.contagem-resultados {
+  font-size: 0.8125rem;
+  color: var(--cor-texto-secundario);
+  margin-bottom: 18px;
+}
+
+.grade-desafios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 22px;
+}
+
+.estado-sem-resultados {
+  text-align: center;
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.icone-vazio {
+  font-size: 2.5rem;
+}
+
+.estado-sem-resultados h3 {
+  font-size: 1.25rem;
+}
+
+.estado-sem-resultados p {
+  max-width: 400px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+  .cabecalho-pagina-desafios {
+    flex-direction: column;
+  }
+  .barra-filtros {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .campo-busca {
+    min-width: 100%;
+  }
+}

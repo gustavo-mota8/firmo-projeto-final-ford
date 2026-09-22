@@ -1,0 +1,218 @@
+<div class="container-pagina" *ngIf="desafio; else naoEncontrado">
+  <!-- Navegação de volta -->
+  <a routerLink="/desafios" class="link-voltar">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m15 18-6-6 6-6"></path>
+    </svg>
+    Voltar para desafios
+  </a>
+
+  <!-- Banner do Desafio -->
+  <div class="cartao-padrao banner-detalhe">
+    <div class="cabecalho-detalhe">
+      <div class="tags-detalhe">
+        <span class="emblema" [ngClass]="desafio.tipo === 'grupo' ? 'emblema-grupo' : 'emblema-gratuito'">
+          {{ desafio.tipo === 'grupo' ? '👥 Grupo' : '👤 Individual' }}
+        </span>
+        <span class="emblema" [ngClass]="desafio.formato === 'caucao' ? 'emblema-caucao' : 'emblema-gratuito'">
+          {{ desafio.formato === 'caucao' ? '💰 Caução' : '🆓 Gratuito' }}
+        </span>
+        <span class="duracao-tag">⏱ Duração: {{ desafio.duracao }}</span>
+      </div>
+
+      <span class="status-inscricao" *ngIf="desafio.inscrito">
+        ✓ Você está participando deste desafio
+      </span>
+    </div>
+
+    <h1 class="titulo-detalhe">{{ desafio.nome }}</h1>
+    <p class="descricao-detalhe">{{ desafio.descricao }}</p>
+
+    <!-- Barra de Progresso se estiver inscrito -->
+    <div class="bloco-progresso-detalhe" *ngIf="desafio.inscrito">
+      <div class="rotulo-progresso-detalhe">SEU PROGRESSO NO DESAFIO</div>
+      <app-barra-progresso
+        [valorAtual]="desafio.progressoUsuario"
+        [valorTotal]="desafio.objetivo"
+        [unidade]="desafio.unidade"
+      ></app-barra-progresso>
+    </div>
+
+    <!-- Métricas do Desafio -->
+    <div class="grade-metricas-detalhe">
+      <app-cartao-estatistica
+        titulo="Posição"
+        [valor]="posicaoUsuario > 0 ? '#' + posicaoUsuario : '—'"
+        subtitulo="No ranking atual"
+        icone="trofeu"
+        tipoDestaque="azul"
+      ></app-cartao-estatistica>
+
+      <app-cartao-estatistica
+        titulo="Entrada"
+        [valor]="desafio.formato === 'caucao' ? 'R$ ' + desafio.entrada : 'Grátis'"
+        subtitulo="Caução individual"
+        icone="dinheiro"
+      ></app-cartao-estatistica>
+
+      <app-cartao-estatistica
+        titulo="Pote Acumulado"
+        [valor]="desafio.pote > 0 ? 'R$ ' + desafio.pote : '—'"
+        subtitulo="Premiação {{ desafio.premiacao }}"
+        icone="dinheiro"
+        tipoDestaque="ouro"
+      ></app-cartao-estatistica>
+
+      <app-cartao-estatistica
+        titulo="Participantes"
+        [valor]="desafio.participantesCount"
+        subtitulo="Atletas comprometidos"
+        icone="check"
+      ></app-cartao-estatistica>
+    </div>
+
+    <!-- Árbitro e Ação Principal -->
+    <div class="rodape-detalhe-acao">
+      <div class="card-arbitro-detalhe">
+        <div class="icone-arbitro-avatar">⚖️</div>
+        <div class="info-arbitro-detalhe">
+          <span class="rotulo-arbitro-mini">Árbitro Oficial</span>
+          <span class="nome-arbitro-destaque">{{ desafio.arbitro }}</span>
+          <span class="desc-arbitro-mini">Validador credenciado pela Firmo</span>
+        </div>
+      </div>
+
+      <div class="botoes-acao-detalhe">
+        <a
+          *ngIf="desafio.inscrito"
+          [routerLink]="['/desafios', desafio.id, 'atividade']"
+          class="botao botao-primario botao-lg"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Registrar atividade
+        </a>
+
+        <button
+          *ngIf="!desafio.inscrito"
+          (click)="entrarNoDesafio()"
+          class="botao botao-sucesso botao-lg"
+        >
+          Assumir compromisso (Entrar no desafio)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navegação de Abas: Ranking / Regras / Atividades -->
+  <div class="abas-navegacao">
+    <button
+      class="botao-aba"
+      [class.ativa]="abaSelecionada === 'ranking'"
+      (click)="selecionarAba('ranking')"
+    >
+      🏆 Ranking Geral ({{ ranking.length }})
+    </button>
+    <button
+      class="botao-aba"
+      [class.ativa]="abaSelecionada === 'regras'"
+      (click)="selecionarAba('regras')"
+    >
+      📋 Regras e Premiação
+    </button>
+    <button
+      class="botao-aba"
+      [class.ativa]="abaSelecionada === 'atividades'"
+      (click)="selecionarAba('atividades')"
+    >
+      🏃‍♂️ Atividades Enviadas ({{ atividadesDoDesafio.length }})
+    </button>
+  </div>
+
+  <!-- Conteúdo da Aba 1: Ranking -->
+  <div class="conteudo-aba cartao-padrao" *ngIf="abaSelecionada === 'ranking'">
+    <app-lista-ranking
+      [itens]="ranking"
+      [unidade]="desafio.unidade"
+      [titulo]="'Classificação ao Vivo — ' + desafio.nome"
+    ></app-lista-ranking>
+  </div>
+
+  <!-- Conteúdo da Aba 2: Regras -->
+  <div class="conteudo-aba cartao-padrao" *ngIf="abaSelecionada === 'regras'">
+    <h3 class="titulo-secao-aba">Regras Oficiais do Desafio</h3>
+    <ul class="lista-regras">
+      <li *ngFor="let regra of desafio.regras">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>{{ regra }}</span>
+      </li>
+    </ul>
+
+    <div class="bloco-premiacao-detalhe">
+      <h4>Critério de Premiação</h4>
+      <p>
+        <strong>{{ desafio.premiacao }}</strong> — O pote acumulado de <strong>R$ {{ desafio.pote }}</strong> será dividido proporcionalmente entre os participantes elegíveis que atingirem a meta e tiverem suas atividades validadas pelo árbitro <strong>{{ desafio.arbitro }}</strong> até a data limite.
+      </p>
+    </div>
+  </div>
+
+  <!-- Conteúdo da Aba 3: Atividades Enviadas -->
+  <div class="conteudo-aba cartao-padrao" *ngIf="abaSelecionada === 'atividades'">
+    <h3 class="titulo-secao-aba">Atividades Submetidas neste Desafio</h3>
+
+    <div class="lista-atividades-submetidas" *ngIf="atividadesDoDesafio.length > 0; else semAtividades">
+      <div class="card-atividade-item" *ngFor="let atividade of atividadesDoDesafio">
+        <div class="topo-item-atividade">
+          <div>
+            <strong>{{ atividade.participante }}</strong>
+            <span class="data-envio">{{ atividade.dataEnvio }}</span>
+          </div>
+          <span
+            class="emblema"
+            [ngClass]="{
+              'emblema-pendente': atividade.status === 'pendente',
+              'emblema-aprovada': atividade.status === 'aprovada',
+              'emblema-rejeitada': atividade.status === 'rejeitada'
+            }"
+          >
+            {{ atividade.status === 'pendente' ? '⏳ Em validação' : (atividade.status === 'aprovada' ? '✓ Aprovada' : '✕ Rejeitada') }}
+          </span>
+        </div>
+
+        <div class="metricas-atividade-item">
+          <span><strong>Distância:</strong> {{ atividade.distancia }} km</span>
+          <span><strong>Tempo:</strong> {{ atividade.tempo }}</span>
+          <span><strong>Código:</strong> {{ atividade.codigoValidacao }}</span>
+        </div>
+
+        <div class="motivo-rejeicao-box" *ngIf="atividade.motivoRejeicao">
+          <strong>Motivo da rejeição pelo árbitro:</strong>
+          <p>{{ atividade.motivoRejeicao }}</p>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #semAtividades>
+      <div class="estado-vazio-atividades">
+        <p>Nenhuma atividade registrada para este desafio ainda.</p>
+        <a [routerLink]="['/desafios', desafio.id, 'atividade']" class="botao botao-primario botao-sm">
+          Registrar primeira atividade
+        </a>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<ng-template #naoEncontrado>
+  <div class="container-pagina">
+    <div class="cartao-padrao estado-nao-encontrado">
+      <h2>Desafio não encontrado</h2>
+      <p>O desafio procurado não existe ou foi encerrado.</p>
+      <a routerLink="/desafios" class="botao botao-primario">Voltar para desafios</a>
+    </div>
+  </div>
+</ng-template>

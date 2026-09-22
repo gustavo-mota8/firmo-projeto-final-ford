@@ -1,0 +1,18 @@
+<div class="container-progresso">
+  <div class="cabecalho-progresso" *ngIf="mostrarRotulo || mostrarPorcentagem">
+    <span class="rotulo-valores" *ngIf="mostrarRotulo">
+      <strong>{{ valorAtual }} {{ unidade }}</strong> / {{ valorTotal }} {{ unidade }}
+    </span>
+    <span class="porcentagem-destaque" *ngIf="mostrarPorcentagem">
+      {{ porcentagem }}%
+    </span>
+  </div>
+
+  <div class="trilho-progresso">
+    <div
+      class="preenchimento-progresso"
+      [style.width.%]="porcentagem"
+      [class.completo]="porcentagem >= 100"
+    ></div>
+  </div>
+</div>
