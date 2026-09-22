@@ -24,7 +24,7 @@ export class FormularioAtividadeComponent implements OnInit {
   tipoAtividade: string = 'Corrida';
   distancia: number = 5.0;
   tempo: string = '32 min';
-  codigoValidacao: string = '4821';
+  codigoValidacao: string = '';
   imagemComprovacao: string = '';
   nomeArquivoComprovacao: string = 'gps_treino_firmo.png';
 
@@ -49,15 +49,18 @@ export class FormularioAtividadeComponent implements OnInit {
       const idParam = params.get('id');
       this.desafioId = idParam ? parseInt(idParam, 10) : 1;
       this.desafio = this.desafioService.obterDesafioPorId(this.desafioId);
-    });
 
-    // Gera um código de validação de 4 dígitos caso vazio
-    if (!this.codigoValidacao) {
-      this.gerarNovoCodigo();
-    }
+      // Gera automaticamente o código único de 4 dígitos ao iniciar o registro da atividade
+      this.gerarCodigoComprovacao();
+    });
   }
 
-  gerarNovoCodigo(): void {
+  get ehDesafioCaucao(): boolean {
+    return this.desafio?.formato === 'caucao';
+  }
+
+  gerarCodigoComprovacao(): void {
+    // Código único de 4 dígitos (1000 a 9999)
     this.codigoValidacao = Math.floor(1000 + Math.random() * 9000).toString();
   }
 
@@ -82,7 +85,7 @@ export class FormularioAtividadeComponent implements OnInit {
     }
 
     if (!this.codigoValidacao) {
-      this.gerarNovoCodigo();
+      this.gerarCodigoComprovacao();
     }
 
     this.enviando = true;

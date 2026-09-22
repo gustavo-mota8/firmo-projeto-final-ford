@@ -4,8 +4,12 @@ import { Atividade } from '../modelos/atividade.model';
 
 const CHAVE_STORAGE = 'firmo_atividades';
 
-// Mock de comprovação visual com SVG moderno simulando app de corrida/GPS
-const COMPROVACAO_MOCK_PADRAO = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="380" viewBox="0 0 600 380"><rect width="100%" height="100%" fill="%230f172a"/><rect x="20" y="20" width="560" height="340" rx="16" fill="%231e293b" stroke="%23334155" stroke-width="2"/><circle cx="80" cy="70" r="28" fill="%232563eb"/><path d="M72 70l6 6 12-12" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="124" y="66" fill="%23f8fafc" font-size="20" font-family="sans-serif" font-weight="bold">Treino de Corrida Matinal</text><text x="124" y="88" fill="%2394a3b8" font-size="14" font-family="sans-serif">GPS Track Conectado • Firmo Sync</text><rect x="50" y="125" width="500" height="130" rx="12" fill="%230f172a" stroke="%231e293b"/><path d="M70 210 Q 150 150, 220 180 T 360 140 T 480 200 T 520 170" fill="none" stroke="%2338bdf8" stroke-width="4" stroke-linecap="round"/><circle cx="70" cy="210" r="6" fill="%2310b981"/><circle cx="520" cy="170" r="7" fill="%23ef4444"/><text x="50" y="295" fill="%2394a3b8" font-size="13" font-family="sans-serif">DISTÂNCIA</text><text x="50" y="325" fill="%2338bdf8" font-size="24" font-family="sans-serif" font-weight="bold">5.00 km</text><text x="210" y="295" fill="%2394a3b8" font-size="13" font-family="sans-serif">RITMO MÉDIO</text><text x="210" y="325" fill="%23f8fafc" font-size="24" font-family="sans-serif" font-weight="bold">6:24 /km</text><text x="370" y="295" fill="%2394a3b8" font-size="13" font-family="sans-serif">TEMPO TOTAL</text><text x="370" y="325" fill="%2310b981" font-size="24" font-family="sans-serif" font-weight="bold">32m 00s</text><rect x="440" y="45" width="110" height="34" rx="8" fill="%2322c55e" fill-opacity="0.15" stroke="%2322c55e"/><text x="495" y="67" fill="%234ade80" font-size="13" font-family="sans-serif" font-weight="bold" text-anchor="middle">CÓD: 4821</text></svg>`;
+// Mock de comprovação visual moderno representando o participante, o contexto do treino e o código físico em papel na cena
+export function gerarComprovacaoMock(codigo: string, distancia: number, tempo: string, participante: string): string {
+  return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400"><rect width="100%" height="100%" fill="%230f172a"/><rect x="16" y="16" width="608" height="368" rx="16" fill="%231e293b" stroke="%23334155" stroke-width="2"/><circle cx="56" cy="56" r="22" fill="%232563eb"/><text x="56" y="63" fill="white" font-size="18" font-family="sans-serif" font-weight="bold" text-anchor="middle">🏃</text><text x="90" y="52" fill="%23f8fafc" font-size="17" font-family="sans-serif" font-weight="bold">${participante}</text><text x="90" y="70" fill="%2394a3b8" font-size="12" font-family="sans-serif">Registro de Atividade • Evidência com Código Físico</text><rect x="36" y="96" width="568" height="114" rx="12" fill="%230f172a" stroke="%23334155"/><path d="M56 175 Q 130 120, 200 150 T 340 115 T 460 170 T 570 140" fill="none" stroke="%2338bdf8" stroke-width="4" stroke-linecap="round"/><circle cx="56" cy="175" r="6" fill="%2310b981"/><circle cx="570" cy="140" r="7" fill="%23ef4444"/><text x="50" y="118" fill="%2364748b" font-size="11" font-family="sans-serif" font-weight="bold">TELEMETRIA GPS DA ATIVIDADE</text><rect x="36" y="226" width="270" height="138" rx="10" fill="%23fef3c7" stroke="%23f59e0b" stroke-width="2"/><rect x="48" y="238" width="16" height="16" rx="3" fill="%23d97706"/><text x="70" y="251" fill="%2392400e" font-size="10.5" font-family="sans-serif" font-weight="bold">CÓDIGO FÍSICO PRESENTE NA CENA</text><text x="171" y="312" fill="%2378350f" font-size="38" font-family="monospace" font-weight="900" text-anchor="middle" letter-spacing="4">${codigo}</text><text x="171" y="344" fill="%23b45309" font-size="11" font-family="sans-serif" text-anchor="middle">Manuscrito em papel durante a foto</text><rect x="322" y="226" width="282" height="138" rx="10" fill="%230f172a" stroke="%23334155"/><text x="342" y="256" fill="%2394a3b8" font-size="12" font-family="sans-serif">DISTÂNCIA TOTAL</text><text x="342" y="286" fill="%2338bdf8" font-size="22" font-family="sans-serif" font-weight="bold">${distancia.toFixed(1)} km</text><text x="475" y="256" fill="%2394a3b8" font-size="12" font-family="sans-serif">TEMPO</text><text x="475" y="286" fill="%2310b981" font-size="22" font-family="sans-serif" font-weight="bold">${tempo}</text><text x="342" y="332" fill="%2364748b" font-size="11.5" font-family="sans-serif">Autenticidade física + telemetria Firmo</text></svg>`;
+}
+
+const COMPROVACAO_MOCK_PADRAO = gerarComprovacaoMock('4821', 5.0, '32 min', 'Gustavo Mota');
 
 const ATIVIDADES_INICIAIS: Atividade[] = [
   {
@@ -29,7 +33,7 @@ const ATIVIDADES_INICIAIS: Atividade[] = [
     tipo: 'Corrida',
     distancia: 8.0,
     tempo: '45 min',
-    comprovacao: COMPROVACAO_MOCK_PADRAO,
+    comprovacao: gerarComprovacaoMock('3109', 8.0, '45 min', 'João Silva'),
     codigoValidacao: '3109',
     status: 'aprovada',
     dataEnvio: 'Ontem, às 18:30'
@@ -42,7 +46,7 @@ const ATIVIDADES_INICIAIS: Atividade[] = [
     tipo: 'Corrida',
     distancia: 6.2,
     tempo: '38 min',
-    comprovacao: COMPROVACAO_MOCK_PADRAO,
+    comprovacao: gerarComprovacaoMock('9214', 6.2, '38 min', 'Lucas Rocha'),
     codigoValidacao: '9214',
     status: 'aprovada',
     dataEnvio: 'Ontem, às 06:45'
@@ -95,7 +99,7 @@ export class AtividadeService {
       tipo: dados.tipo,
       distancia: dados.distancia,
       tempo: dados.tempo,
-      comprovacao: dados.comprovacao || COMPROVACAO_MOCK_PADRAO,
+      comprovacao: dados.comprovacao || gerarComprovacaoMock(dados.codigoValidacao, dados.distancia, dados.tempo, dados.participante),
       codigoValidacao: dados.codigoValidacao,
       status: 'pendente',
       dataEnvio: 'Hoje, há poucos minutos'

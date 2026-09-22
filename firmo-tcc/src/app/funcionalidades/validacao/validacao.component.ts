@@ -20,8 +20,10 @@ export class ValidacaoComponent implements OnInit {
   atividadesPendentes: Atividade[] = [];
   atividadesAvaliadas: Atividade[] = [];
 
+  codigosIdentificados: { [id: number]: string } = {};
+
   atividadeRejeitando: Atividade | null = null;
-  motivoRejeicao: string = 'A comprovação não está clara';
+  motivoRejeicao: string = 'Código não corresponde ou não está visível na evidência';
 
   mensagemFeedback: {
     tipo: 'sucesso' | 'erro';
@@ -31,6 +33,14 @@ export class ValidacaoComponent implements OnInit {
 
   modalEvidenciaAberta: boolean = false;
   evidenciaSelecionada: string = '';
+  atividadeModalAtual: Atividade | null = null;
+
+  motivosRapidosRejeicao: string[] = [
+    'Código não corresponde ou não está visível na evidência',
+    'Participante não aparece na foto',
+    'Evidência não corresponde à atividade',
+    'Comprovação ilegível ou incompleta'
+  ];
 
   constructor(
     private atividadeService: AtividadeService,
@@ -51,7 +61,44 @@ export class ValidacaoComponent implements OnInit {
     });
   }
 
+  obterDesafio(desafioId: number) {
+    return this.desafioService.obterDesafioPorId(desafioId);
+  }
+
+  ehDesafioCaucao(atividade: Atividade): boolean {
+    const desafio = this.obterDesafio(atividade.desafioId);
+    return desafio?.formato === 'caucao';
+  }
+
+  codigoCorresponde(atividade: Atividade): boolean {
+    const identificado = (this.codigosIdentificados[atividade.id] || '').trim();
+    return identificado === atividade.codigoValidacao;
+  }
+
+  confirmarCodigoIdentificado(atividade: Atividade, codigo?: string): void {
+    this.codigosIdentificados[atividade.id] = codigo || atividade.codigoValidacao;
+  }
+
+  limparCodigoIdentificado(atividade: Atividade): void {
+    this.codigosIdentificados[atividade.id] = '';
+  }
+
   aprovar(atividade: Atividade): void {
+    // Regra de aprovação para desafios com caução:
+    // Evidência válida + código físico visível + código correspondente + validação do árbitro
+    if (this.ehDesafioCaucao(atividade) && !this.codigoCorresponde(atividade)) {
+      this.mensagemFeedback = {
+        tipo: 'erro',
+        titulo: 'Código físico não conferido!',
+        detalhe: `Para desafios com caução, a atividade só pode ser aprovada se o código físico na evidência for verificado e corresponder ao código esperado (${atividade.codigoValidacao}). Caso o código não confira, rejeite a atividade.`
+      };
+
+      setTimeout(() => {
+        this.mensagemFeedback = null;
+      }, 6000);
+      return;
+    }
+
     // 1. Aprova no AtividadeService
     this.atividadeService.aprovarAtividade(atividade.id);
 
@@ -78,7 +125,7 @@ export class ValidacaoComponent implements OnInit {
     this.mensagemFeedback = {
       tipo: 'sucesso',
       titulo: 'Atividade aprovada com sucesso!',
-      detalhe: `Progresso e ranking atualizados! ${atividade.participante} alcançou a posição #${novaPosicao} com +${atividade.distancia} km!`
+      detalhe: `Autenticidade e evidência verificadas! ${atividade.participante} alcançou a posição #${novaPosicao} no ranking com +${atividade.distancia} km!`
     };
 
     setTimeout(() => {
@@ -88,7 +135,15 @@ export class ValidacaoComponent implements OnInit {
 
   iniciarRejeicao(atividade: Atividade): void {
     this.atividadeRejeitando = atividade;
-    this.motivoRejeicao = 'A comprovação não está clara';
+    if (this.ehDesafioCaucao(atividade) && !this.codigoCorresponde(atividade)) {
+      this.motivoRejeicao = 'Código não corresponde ou não está visível na evidência';
+    } else {
+      this.motivoRejeicao = 'A comprovação não está clara';
+    }
+  }
+
+  selecionarMotivo(motivo: string): void {
+    this.motivoRejeicao = motivo;
   }
 
   cancelarRejeicao(): void {
@@ -113,13 +168,15 @@ export class ValidacaoComponent implements OnInit {
     }, 5000);
   }
 
-  verEvidencia(url: string): void {
-    this.evidenciaSelecionada = url;
+  verEvidencia(atividade: Atividade): void {
+    this.evidenciaSelecionada = atividade.comprovacao;
+    this.atividadeModalAtual = atividade;
     this.modalEvidenciaAberta = true;
   }
 
   fecharModalEvidencia(): void {
     this.modalEvidenciaAberta = false;
     this.evidenciaSelecionada = '';
+    this.atividadeModalAtual = null;
   }
 }

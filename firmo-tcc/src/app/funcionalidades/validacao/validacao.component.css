@@ -458,3 +458,178 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Painel de verificação do código físico para desafios com caução */
+.painel-conferencia-codigo {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1.5px solid #f59e0b;
+  border-radius: var(--raio-borda-md);
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.cabecalho-conferencia {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  color: #92400e;
+}
+
+.icone-conferencia {
+  font-size: 1rem;
+}
+
+.linha-verificacao-codigo {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.coluna-esperado,
+.coluna-identificado,
+.coluna-status-codigo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mini-rotulo {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #92400e;
+}
+
+.codigo-esperado-display {
+  font-family: monospace;
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: var(--cor-azul-principal);
+  background: #ffffff;
+  padding: 6px 12px;
+  border-radius: var(--raio-borda-sm);
+  border: 1px solid #bfdbfe;
+}
+
+.campo-codigo-identificado {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.input-codigo-verificacao {
+  font-family: monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-align: center;
+  width: 80px;
+  padding: 6px 8px;
+  border: 1.5px solid #d1d5db;
+  border-radius: var(--raio-borda-sm);
+  outline: none;
+  transition: var(--transicao-rapida);
+}
+
+.input-codigo-verificacao:focus {
+  border-color: var(--cor-azul-principal);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.botao-confirmar-codigo {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #065f46;
+  background: #d1fae5;
+  border: 1px solid #6ee7b7;
+  border-radius: var(--raio-borda-sm);
+  padding: 6px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transicao-rapida);
+}
+
+.botao-confirmar-codigo:hover {
+  background: #a7f3d0;
+}
+
+.badge-codigo-corresponde {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #065f46;
+  background: #d1fae5;
+  border: 1px solid #6ee7b7;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.badge-codigo-diverge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #991b1b;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.badge-codigo-pendente {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #92400e;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.nota-conferencia {
+  font-size: 0.75rem;
+  color: #b45309;
+  margin: 8px 0 0;
+}
+
+/* Chips de motivo rápido de rejeição */
+.chips-motivo-rapido {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.chip-motivo {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #991b1b;
+  background: #fff5f5;
+  border: 1px solid #fca5a5;
+  border-radius: 9999px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: var(--transicao-rapida);
+}
+
+.chip-motivo:hover {
+  background: #fee2e2;
+}
+
+.chip-selecionado {
+  background: #fee2e2;
+  border-color: #f87171;
+  color: #7f1d1d;
+}
+
+/* Botão desabilitado para aprovação sem código confirmado */
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

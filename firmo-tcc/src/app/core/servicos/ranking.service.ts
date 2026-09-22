@@ -3,6 +3,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ItemRanking } from '../modelos/ranking.model';
 
 const CHAVE_STORAGE = 'firmo_rankings';
+const VERSAO_DADOS = 'v3'; // Incrementar ao alterar RANKINGS_INICIAIS para invalidar cache
+const CHAVE_VERSAO = 'firmo_rankings_versao';
 
 interface TabelaRanking {
   [desafioId: number]: ItemRanking[];
@@ -94,7 +96,7 @@ export class RankingService {
   private rankingsSubject = new BehaviorSubject<TabelaRanking>(this.carregarDoStorage());
   public rankings$: Observable<TabelaRanking> = this.rankingsSubject.asObservable();
 
-  constructor() {}
+  constructor() { }
 
   public obterRankingPorDesafio(desafioId: number): ItemRanking[] {
     const rankings = this.rankingsSubject.value;
@@ -149,7 +151,14 @@ export class RankingService {
 
   private carregarDoStorage(): TabelaRanking {
     try {
+      const versaoSalva = localStorage.getItem(CHAVE_VERSAO);
       const salvo = localStorage.getItem(CHAVE_STORAGE);
+      // Se a versão dos dados mudou, descarta o cache e usa os dados iniciais atualizados
+      if (versaoSalva !== VERSAO_DADOS) {
+        localStorage.removeItem(CHAVE_STORAGE);
+        localStorage.setItem(CHAVE_VERSAO, VERSAO_DADOS);
+        return RANKINGS_INICIAIS;
+      }
       if (salvo) {
         return JSON.parse(salvo);
       }

@@ -1,13 +1,21 @@
 .cabecalho-principal {
   height: var(--altura-cabecalho);
+  width: 100%;
+
   background-color: var(--cor-superficie);
   border-bottom: 1px solid var(--cor-borda);
+
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   padding: 0 24px;
-  position: sticky;
+  box-sizing: border-box;
+
+  position: fixed;
   top: 0;
+  left: 0;
+
   z-index: 40;
   box-shadow: var(--sombra-sm);
 }
@@ -38,13 +46,21 @@
 .icone-logo {
   width: 38px;
   height: 38px;
-  background: linear-gradient(135deg, var(--cor-azul-principal) 0%, var(--cor-azul-marinho) 100%);
+  background: white;
   border-radius: 10px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+
+  overflow: hidden;
   box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+.icone-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .texto-logo {
@@ -64,7 +80,6 @@
   font-size: 0.6875rem;
   color: var(--cor-texto-secundario);
   font-weight: 500;
-  letter-spacing: -0.01em;
 }
 
 .lado-direito {
@@ -77,44 +92,45 @@
   display: flex;
   align-items: center;
   gap: 8px;
+
   background-color: #f1f5f9;
   border: 1px solid var(--cor-borda);
+
   padding: 8px 14px;
   border-radius: 9999px;
+
   color: var(--cor-texto-principal);
   font-size: 0.8125rem;
   font-weight: 600;
   text-decoration: none;
+
   transition: var(--transicao-rapida);
 }
 
 .botao-arbitro-atalho:hover {
   background-color: #e2e8f0;
-  border-color: #cbd5e1;
 }
 
 .contador-pendentes {
   background-color: var(--cor-recompensa);
-  color: #ffffff;
+  color: #fff;
+
   font-size: 0.75rem;
   font-weight: 700;
+
   border-radius: 9999px;
   padding: 2px 7px;
-  line-height: 1;
 }
 
 .link-perfil-cabecalho {
   display: flex;
   align-items: center;
   gap: 12px;
+
   padding: 4px 8px;
   border-radius: 9999px;
-  text-decoration: none;
-  transition: var(--transicao-rapida);
-}
 
-.link-perfil-cabecalho:hover {
-  background-color: #f8fafc;
+  text-decoration: none;
 }
 
 .info-usuario-cabecalho {
@@ -147,9 +163,11 @@
   .botao-menu-mobile {
     display: flex;
   }
+
   .slogan-marca {
     display: none;
   }
+
   .info-usuario-cabecalho {
     display: none;
   }

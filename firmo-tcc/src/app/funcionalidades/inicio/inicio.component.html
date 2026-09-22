@@ -87,8 +87,8 @@
         <app-lista-ranking
           [itens]="rankingDesafioAtual"
           [unidade]="desafioAtual?.unidade || 'km'"
-          titulo="Ranking — Corrida 50K"
-          [limite]="5"
+          titulo="Classificação ao Vivo — Corrida 50K"
+          [limite]="10"
         ></app-lista-ranking>
         <div class="rodape-card-link">
           <a [routerLink]="['/desafios', desafioAtual?.id]" class="link-simples">

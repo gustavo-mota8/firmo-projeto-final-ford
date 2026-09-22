@@ -77,9 +77,72 @@
             </div>
 
             <div class="caixa-metrica-validacao">
-              <span class="rotulo-dado">Código:</span>
+              <span class="rotulo-dado">Código esperado:</span>
               <strong class="metrica-numero codigo-anti-fraude">{{ atividade.codigoValidacao }}</strong>
             </div>
+          </div>
+
+          <!-- Painel de conferência do código físico (apenas caução) -->
+          <div class="painel-conferencia-codigo" *ngIf="ehDesafioCaucao(atividade)">
+            <div class="cabecalho-conferencia">
+              <span class="icone-conferencia">🔐</span>
+              <span class="rotulo-dado">Verificação do Código Físico na Evidência</span>
+            </div>
+
+            <div class="linha-verificacao-codigo">
+              <div class="coluna-esperado">
+                <span class="mini-rotulo">Código esperado</span>
+                <span class="codigo-esperado-display">{{ atividade.codigoValidacao }}</span>
+              </div>
+
+              <div class="coluna-identificado">
+                <span class="mini-rotulo">Código identificado na foto</span>
+                <div class="campo-codigo-identificado">
+                  <input
+                    type="text"
+                    [id]="'codigoId-' + atividade.id"
+                    maxlength="4"
+                    placeholder="Ex: {{ atividade.codigoValidacao }}"
+                    [value]="codigosIdentificados[atividade.id] || ''"
+                    (input)="codigosIdentificados[atividade.id] = $any($event.target).value"
+                    class="input-codigo-verificacao"
+                  />
+                  <button
+                    type="button"
+                    class="botao-confirmar-codigo"
+                    (click)="confirmarCodigoIdentificado(atividade)"
+                    title="Confirmar que o código visível na foto é o mesmo esperado"
+                  >
+                    ✓ Confirmar
+                  </button>
+                </div>
+              </div>
+
+              <div class="coluna-status-codigo">
+                <span
+                  class="badge-codigo-corresponde"
+                  *ngIf="codigoCorresponde(atividade)"
+                >
+                  ✓ Código corresponde
+                </span>
+                <span
+                  class="badge-codigo-diverge"
+                  *ngIf="codigosIdentificados[atividade.id] !== undefined && codigosIdentificados[atividade.id] !== '' && !codigoCorresponde(atividade)"
+                >
+                  ✕ Código diverge
+                </span>
+                <span
+                  class="badge-codigo-pendente"
+                  *ngIf="!codigosIdentificados[atividade.id]"
+                >
+                  ⌛ Aguardando conferência
+                </span>
+              </div>
+            </div>
+
+            <p class="nota-conferencia" *ngIf="!codigoCorresponde(atividade)">
+              Verifique a foto ampliada abaixo e informe o código visível fisicamente na cena.
+            </p>
           </div>
 
           <!-- Prévia da Evidência / Imagem -->
@@ -89,13 +152,13 @@
               <button
                 type="button"
                 class="botao-expandir"
-                (click)="verEvidencia(atividade.comprovacao)"
+                (click)="verEvidencia(atividade)"
               >
                 [ visualizar evidência ]
               </button>
             </div>
 
-            <div class="miniatura-evidencia" (click)="verEvidencia(atividade.comprovacao)">
+            <div class="miniatura-evidencia" (click)="verEvidencia(atividade)">
               <img [src]="atividade.comprovacao" alt="Comprovação de GPS" />
               <div class="sobreposicao-hover">
                 <span>Clique para ampliar 🔍</span>
@@ -107,6 +170,17 @@
         <!-- Se estiver no processo de rejeição desta atividade -->
         <div class="caixa-motivo-rejeicao" *ngIf="atividadeRejeitando?.id === atividade.id">
           <label for="motivoRejeicao">Motivo da rejeição:</label>
+          <div class="chips-motivo-rapido">
+            <button
+              type="button"
+              *ngFor="let motivo of motivosRapidosRejeicao"
+              class="chip-motivo"
+              [class.chip-selecionado]="motivoRejeicao === motivo"
+              (click)="selecionarMotivo(motivo)"
+            >
+              {{ motivo }}
+            </button>
+          </div>
           <input
             id="motivoRejeicao"
             type="text"
@@ -125,11 +199,17 @@
 
         <!-- Ações do Árbitro -->
         <div class="rodape-acoes-validacao" *ngIf="atividadeRejeitando?.id !== atividade.id">
-          <button class="botao botao-sucesso botao-lg botao-flex" (click)="aprovar(atividade)">
+          <button
+            class="botao botao-sucesso botao-lg botao-flex"
+            (click)="aprovar(atividade)"
+            [disabled]="ehDesafioCaucao(atividade) && !codigoCorresponde(atividade)"
+            [title]="ehDesafioCaucao(atividade) && !codigoCorresponde(atividade) ? 'Confirme o código físico antes de aprovar' : ''"
+          >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
-            Aprovar atividade
+            <span *ngIf="!ehDesafioCaucao(atividade) || codigoCorresponde(atividade)">Aprovar atividade</span>
+            <span *ngIf="ehDesafioCaucao(atividade) && !codigoCorresponde(atividade)">🔒 Confirme o código</span>
           </button>
 
           <button class="botao botao-perigo botao-flex" (click)="iniciarRejeicao(atividade)">

@@ -103,9 +103,9 @@
           </div>
         </div>
 
-        <!-- Comprovação (Upload / Mock de GPS) -->
+        <!-- Comprovação (Upload da Foto com Evidência + Código) -->
         <div class="campo-formulario">
-          <label>Comprovação (Print do GPS / App de corrida)</label>
+          <label>Foto de Comprovação (Você + Evidência + Código Físico)</label>
           <div class="area-upload-arquivo">
             <input
               type="file"
@@ -120,37 +120,53 @@
                 <circle cx="9" cy="9" r="2"></circle>
                 <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
               </svg>
-              <span class="texto-upload-principal">Clique para selecionar imagem ou print do GPS</span>
-              <span class="nome-arquivo-selecionado">Arquivo atual: {{ nomeArquivoComprovacao }}</span>
+              <span class="texto-upload-principal">Clique para selecionar ou tirar a foto de comprovação</span>
+              <span class="nome-arquivo-selecionado">Arquivo selecionado: {{ nomeArquivoComprovacao }}</span>
             </label>
           </div>
-          <small class="dica-upload">
-            * Se não selecionar nenhum arquivo, uma comprovação mock simulando Strava/GPS com o código de validação será utilizada automaticamente.
+          <small class="dica-upload" *ngIf="ehDesafioCaucao">
+            * A foto deve conter você, a atividade e o código físico na cena. Caso não anexe foto local, uma evidência com o código físico será gerada para demonstração.
+          </small>
+          <small class="dica-upload" *ngIf="!ehDesafioCaucao">
+            * Envie o print ou foto do seu treino para validação do árbitro.
           </small>
         </div>
 
-        <!-- Código de Validação -->
-        <div class="campo-formulario">
-          <div class="cabecalho-campo-codigo">
-            <label for="codigoValidacao">Código de Validação</label>
-            <button type="button" class="botao-gerar-codigo" (click)="gerarNovoCodigo()">
-              Gerar novo código
-            </button>
+        <!-- Bloco do Código de Comprovação (Geração Automática - Sem Digitação Manual) -->
+        <div class="bloco-codigo-autenticacao" *ngIf="ehDesafioCaucao; else blocoGratuito">
+          <div class="cabecalho-codigo-autenticacao">
+            <div class="rotulo-com-icone">
+              <span class="icone-chave">🔐</span>
+              <span class="titulo-codigo-texto">Código de comprovação</span>
+            </div>
+            <span class="badge-caucao-obrigatorio">Caução • Código Físico Obrigatório</span>
           </div>
-          <input
-            id="codigoValidacao"
-            name="codigoValidacao"
-            type="text"
-            [(ngModel)]="codigoValidacao"
-            required
-            maxlength="6"
-            placeholder="Ex: 4821"
-            class="input-codigo"
-          />
-          <small class="dica-campo">
-            Este código anti-fraude deve estar visível na foto ou título do treino para verificação pelo árbitro.
-          </small>
+
+          <div class="caixa-codigo-destaque">
+            <span class="numero-codigo-gerado">{{ codigoValidacao }}</span>
+          </div>
+
+          <div class="instrucoes-codigo-fisico">
+            <p class="instrucao-principal-fisica">
+              <strong>Apresente este código fisicamente na foto de comprovação da atividade.</strong>
+            </p>
+            <p class="instrucao-detalhe-fisica">
+              A foto deve mostrar você, a evidência da atividade e o código fisicamente presente na cena.
+            </p>
+          </div>
         </div>
+
+        <ng-template #blocoGratuito>
+          <div class="bloco-codigo-gratuito">
+            <div class="info-gratuito-header">
+              <span class="icone-info-gratuito">🆓</span>
+              <strong>Desafio Gratuito</strong>
+            </div>
+            <p class="texto-gratuito-dica">
+              Envie a foto ou print de comprovação do treino. Em desafios gratuitos, o código físico não é obrigatório na cena.
+            </p>
+          </div>
+        </ng-template>
 
         <!-- Botão Submeter -->
         <div class="rodape-submissao">
