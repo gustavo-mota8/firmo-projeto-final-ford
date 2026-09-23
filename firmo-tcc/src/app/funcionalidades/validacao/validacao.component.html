@@ -65,10 +65,10 @@
           </div>
 
           <!-- Métricas -->
-          <div class="grade-metricas-validacao">
+          <div class="grade-metricas-validacao" *ngIf="obterDesafio(atividade.desafioId) as desafio">
             <div class="caixa-metrica-validacao">
-              <span class="rotulo-dado">Distância:</span>
-              <strong class="metrica-numero">{{ atividade.distancia }} km</strong>
+              <span class="rotulo-dado">Resultado:</span>
+              <strong class="metrica-numero">{{ atividade.valorMetrica }} {{ desafio.unidade }}</strong>
             </div>
 
             <div class="caixa-metrica-validacao">
@@ -245,7 +245,7 @@
           <tr>
             <th>Participante</th>
             <th>Atividade</th>
-            <th>Distância</th>
+            <th>Resultado</th>
             <th>Tempo</th>
             <th>Código</th>
             <th>Status</th>
@@ -256,7 +256,7 @@
           <tr *ngFor="let a of atividadesAvaliadas">
             <td><strong>{{ a.participante }}</strong></td>
             <td>{{ a.tipo }}</td>
-            <td>{{ a.distancia }} km</td>
+            <td>{{ a.valorMetrica }} {{ obterDesafio(a.desafioId)?.unidade }}</td>
             <td>{{ a.tempo }}</td>
             <td><code>{{ a.codigoValidacao }}</code></td>
             <td>

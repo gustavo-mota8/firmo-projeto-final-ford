@@ -7,6 +7,7 @@
       <span class="emblema" [ngClass]="desafio.formato === 'caucao' ? 'emblema-caucao' : 'emblema-gratuito'">
         {{ desafio.formato === 'caucao' ? '💰 Caução' : '🆓 Gratuito' }}
       </span>
+      <span class="emblema emblema-grupo" *ngIf="desafio.modalidade">🏅 {{ desafio.modalidade }}</span>
     </div>
     <span class="duracao-badge">⏱ {{ desafio.duracao }}</span>
   </div>

@@ -17,6 +17,7 @@
         <span class="emblema" [ngClass]="desafio.formato === 'caucao' ? 'emblema-caucao' : 'emblema-gratuito'">
           {{ desafio.formato === 'caucao' ? '💰 Caução' : '🆓 Gratuito' }}
         </span>
+        <span class="emblema emblema-grupo">🏅 {{ desafio.modalidade }}</span>
         <span class="duracao-tag">⏱ Duração: {{ desafio.duracao }}</span>
       </div>
 
@@ -184,8 +185,23 @@
         </div>
 
         <div class="metricas-atividade-item">
-          <span><strong>Distância:</strong> {{ atividade.distancia }} km</span>
-          <span><strong>Tempo:</strong> {{ atividade.tempo }}</span>
+          <!-- Distância (corrida, ciclismo, caminhada) -->
+          <span *ngIf="desafio.categoriaMetrica === 'distancia'">
+            <strong>Distância:</strong> {{ atividade.valorMetrica }} {{ desafio.unidade }}
+          </span>
+          <!-- Duração (academia, yoga) -->
+          <span *ngIf="desafio.categoriaMetrica === 'duracao'">
+            <strong>Duração:</strong> {{ atividade.valorMetrica }} {{ desafio.unidade }}
+          </span>
+          <!-- Sessões (futebol, vôlei, basquete) -->
+          <span *ngIf="desafio.categoriaMetrica === 'sessoes'">
+            <strong>{{ desafio.unidade | titlecase }}:</strong> {{ atividade.valorMetrica }}
+          </span>
+          <!-- Personalizado -->
+          <span *ngIf="desafio.categoriaMetrica === 'personalizado'">
+            <strong>Resultado:</strong> {{ atividade.valorMetrica }} {{ desafio.unidade }}
+          </span>
+          <span *ngIf="desafio.categoriaMetrica !== 'duracao'"><strong>Tempo:</strong> {{ atividade.tempo }}</span>
           <span><strong>Código:</strong> {{ atividade.codigoValidacao }}</span>
         </div>
 

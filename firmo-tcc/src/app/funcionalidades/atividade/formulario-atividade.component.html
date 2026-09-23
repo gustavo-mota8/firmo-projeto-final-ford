@@ -32,11 +32,24 @@
         <span>Atividade:</span>
         <strong>{{ atividadeEnviada.tipo }}</strong>
       </div>
-      <div class="item-resumo">
+      <!-- Exibe a métrica correta conforme a categoria do desafio -->
+      <div class="item-resumo" *ngIf="exibirCampoDistancia">
         <span>Distância:</span>
-        <strong>{{ atividadeEnviada.distancia }} km</strong>
+        <strong>{{ atividadeEnviada.valorMetrica }} {{ unidade }}</strong>
       </div>
-      <div class="item-resumo">
+      <div class="item-resumo" *ngIf="exibirCampoDuracao">
+        <span>Duração:</span>
+        <strong>{{ atividadeEnviada.valorMetrica }} {{ unidade }}</strong>
+      </div>
+      <div class="item-resumo" *ngIf="exibirCampoSessoes">
+        <span>{{ unidade | titlecase }}:</span>
+        <strong>{{ atividadeEnviada.valorMetrica }}</strong>
+      </div>
+      <div class="item-resumo" *ngIf="exibirCampoPersonalizado">
+        <span>Resultado ({{ unidade }}):</span>
+        <strong>{{ atividadeEnviada.valorMetrica }}</strong>
+      </div>
+      <div class="item-resumo" *ngIf="!exibirCampoDuracao">
         <span>Tempo:</span>
         <strong>{{ atividadeEnviada.tempo }}</strong>
       </div>
@@ -65,32 +78,85 @@
   <ng-template #formularioTemplate>
     <div class="cartao-padrao container-formulario">
       <form (ngSubmit)="submeterAtividade()">
-        <!-- Tipo de Atividade -->
+
+        <!-- Tipo da Atividade (preenchido com modalidade do desafio, somente leitura) -->
         <div class="campo-formulario">
-          <label for="tipoAtividade">Atividade</label>
-          <select id="tipoAtividade" name="tipoAtividade" [(ngModel)]="tipoAtividade">
-            <option *ngFor="let t of tiposDisponiveis" [value]="t">{{ t }}</option>
-          </select>
+          <label for="tipoAtividade">Modalidade</label>
+          <input
+            id="tipoAtividade"
+            name="tipoAtividade"
+            type="text"
+            [(ngModel)]="tipoAtividade"
+            readonly
+            style="background-color: #f8fafc; cursor: default;"
+          />
         </div>
 
         <div class="grade-campos-dupla">
-          <!-- Distância -->
-          <div class="campo-formulario">
-            <label for="distancia">Distância (km)</label>
+          <!-- Campo de Métrica — condicional por categoriaMetrica do desafio -->
+
+          <!-- Distância (corrida, ciclismo, natação, caminhada) -->
+          <div class="campo-formulario" *ngIf="exibirCampoDistancia">
+            <label for="valorMetrica">{{ labelCampoMetrica }}</label>
             <input
-              id="distancia"
-              name="distancia"
+              id="valorMetrica"
+              name="valorMetrica"
               type="number"
               step="0.1"
               min="0.1"
-              [(ngModel)]="distancia"
+              [(ngModel)]="valorMetrica"
               required
-              placeholder="Ex: 5"
+              [placeholder]="placeholderCampoMetrica"
             />
           </div>
 
-          <!-- Tempo -->
-          <div class="campo-formulario">
+          <!-- Duração em minutos (academia, yoga, musculação) -->
+          <div class="campo-formulario" *ngIf="exibirCampoDuracao">
+            <label for="valorMetrica">{{ labelCampoMetrica }}</label>
+            <input
+              id="valorMetrica"
+              name="valorMetrica"
+              type="number"
+              step="5"
+              min="1"
+              [(ngModel)]="valorMetrica"
+              required
+              [placeholder]="placeholderCampoMetrica"
+            />
+          </div>
+
+          <!-- Número de sessões/partidas (futebol, vôlei, basquete, futevôlei) -->
+          <div class="campo-formulario" *ngIf="exibirCampoSessoes">
+            <label for="valorMetrica">{{ labelCampoMetrica }}</label>
+            <input
+              id="valorMetrica"
+              name="valorMetrica"
+              type="number"
+              step="1"
+              min="1"
+              [(ngModel)]="valorMetrica"
+              required
+              [placeholder]="placeholderCampoMetrica"
+            />
+          </div>
+
+          <!-- Resultado personalizado -->
+          <div class="campo-formulario" *ngIf="exibirCampoPersonalizado">
+            <label for="valorMetrica">{{ labelCampoMetrica }}</label>
+            <input
+              id="valorMetrica"
+              name="valorMetrica"
+              type="number"
+              step="1"
+              min="1"
+              [(ngModel)]="valorMetrica"
+              required
+              [placeholder]="placeholderCampoMetrica"
+            />
+          </div>
+
+          <!-- Tempo/Duração da sessão — não exibido para 'duracao' pois é derivado do valorMetrica -->
+          <div class="campo-formulario" *ngIf="!exibirCampoDuracao">
             <label for="tempo">Tempo</label>
             <input
               id="tempo"
@@ -98,14 +164,14 @@
               type="text"
               [(ngModel)]="tempo"
               required
-              placeholder="Ex: 32 min"
+              placeholder="Ex: 60 min"
             />
           </div>
         </div>
 
         <!-- Comprovação (Upload da Foto com Evidência + Código) -->
         <div class="campo-formulario">
-          <label>Foto de Comprovação (Você + Evidência + Código Físico)</label>
+          <label>Foto de Comprovação (Evidência + Código Físico)</label>
           <div class="area-upload-arquivo">
             <input
               type="file"
@@ -125,14 +191,14 @@
             </label>
           </div>
           <small class="dica-upload" *ngIf="ehDesafioCaucao">
-            * A foto deve conter você, a atividade e o código físico na cena. Caso não anexe foto local, uma evidência com o código físico será gerada para demonstração.
+            * A foto deve conter você, a evidência da atividade e o código físico na cena. Caso não anexe foto, uma evidência com código será gerada para demonstração.
           </small>
           <small class="dica-upload" *ngIf="!ehDesafioCaucao">
-            * Envie o print ou foto do seu treino para validação do árbitro.
+            * Envie o print ou foto da atividade para validação do árbitro.
           </small>
         </div>
 
-        <!-- Bloco do Código de Comprovação (Geração Automática - Sem Digitação Manual) -->
+        <!-- Bloco do Código de Comprovação -->
         <div class="bloco-codigo-autenticacao" *ngIf="ehDesafioCaucao; else blocoGratuito">
           <div class="cabecalho-codigo-autenticacao">
             <div class="rotulo-com-icone">
@@ -163,7 +229,7 @@
               <strong>Desafio Gratuito</strong>
             </div>
             <p class="texto-gratuito-dica">
-              Envie a foto ou print de comprovação do treino. Em desafios gratuitos, o código físico não é obrigatório na cena.
+              Envie a foto ou print de comprovação da atividade. Em desafios gratuitos, o código físico não é obrigatório na cena.
             </p>
           </div>
         </ng-template>

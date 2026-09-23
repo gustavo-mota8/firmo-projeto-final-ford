@@ -126,11 +126,6 @@
   display: none;
 }
 
-/* Conteúdo da página ao lado do menu */
-.conteudo-principal {
-  margin-left: var(--largura-sidebar);
-}
-
 /* =========================
    MOBILE
 ========================= */
@@ -155,9 +150,6 @@
     transform: translateX(0);
   }
 
-  .conteudo-principal {
-    margin-left: 0;
-  }
 
   .overlay-menu-mobile {
     display: block;

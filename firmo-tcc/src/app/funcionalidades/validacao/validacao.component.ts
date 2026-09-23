@@ -102,22 +102,25 @@ export class ValidacaoComponent implements OnInit {
     // 1. Aprova no AtividadeService
     this.atividadeService.aprovarAtividade(atividade.id);
 
-    // 2. Pontos proporcionais (50 pontos base + 10 por km)
-    const pontosCalculados = Math.round(atividade.distancia * 10);
+    const desafio = this.obterDesafio(atividade.desafioId);
+    const unidade = desafio ? desafio.unidade : '';
+
+    // 2. Pontos proporcionais (50 pontos base + 10 por km/unidade)
+    const pontosCalculados = Math.round(atividade.valorMetrica * 10);
 
     // 3. Atualiza no DesafioService (aumenta o progresso do usuário)
-    this.desafioService.atualizarProgressoDesafio(atividade.desafioId, atividade.distancia);
+    this.desafioService.atualizarProgressoDesafio(atividade.desafioId, atividade.valorMetrica);
 
     // 4. Atualiza no RankingService (sobe de posição no ranking)
     this.rankingService.atualizarDistanciaUsuario(
       atividade.desafioId,
       atividade.usuarioId,
-      atividade.distancia,
+      atividade.valorMetrica,
       pontosCalculados
     );
 
     // 5. Atualiza no UsuarioService (saldo total de km e pontos)
-    this.usuarioService.adicionarPontosEKm(atividade.distancia, pontosCalculados);
+    this.usuarioService.adicionarPontosEKm(atividade.valorMetrica, pontosCalculados);
 
     // Nova posição no ranking
     const novaPosicao = this.rankingService.obterPosicaoUsuario(atividade.desafioId, atividade.usuarioId);
@@ -125,7 +128,7 @@ export class ValidacaoComponent implements OnInit {
     this.mensagemFeedback = {
       tipo: 'sucesso',
       titulo: 'Atividade aprovada com sucesso!',
-      detalhe: `Autenticidade e evidência verificadas! ${atividade.participante} alcançou a posição #${novaPosicao} no ranking com +${atividade.distancia} km!`
+      detalhe: `Autenticidade e evidência verificadas! ${atividade.participante} alcançou a posição #${novaPosicao} no ranking com +${atividade.valorMetrica} ${unidade}!`
     };
 
     setTimeout(() => {

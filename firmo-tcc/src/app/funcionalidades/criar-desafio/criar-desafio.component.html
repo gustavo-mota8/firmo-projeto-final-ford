@@ -8,7 +8,7 @@
     </a>
     <h1 class="titulo-pagina">Criar Desafio</h1>
     <p class="subtitulo-pagina">
-      Defina as regras, objetivo, premiação e o árbitro responsável pelo seu desafio.
+      Defina a modalidade, objetivo, premiação e o árbitro responsável pelo seu desafio.
     </p>
   </div>
 
@@ -33,7 +33,7 @@
             type="text"
             [(ngModel)]="nome"
             required
-            placeholder="Ex: Corrida 50K — Setembro"
+            placeholder="Ex: Liga Futevôlei — 21 Partidas"
           />
         </div>
 
@@ -45,8 +45,38 @@
             name="descricao"
             rows="2"
             [(ngModel)]="descricao"
-            placeholder="Ex: Supere seus limites correndo 50 km com comprovação via GPS..."
+            placeholder="Ex: Dispute 21 partidas de futevôlei em 30 dias com comprovação validada pelo árbitro..."
           ></textarea>
+        </div>
+
+        <!-- Modalidade (seleção de esporte) -->
+        <div class="campo-formulario">
+          <label for="modalidade">Esporte / Modalidade</label>
+          <select id="modalidade" name="modalidade" [(ngModel)]="modalidadeSelecionada">
+            <option *ngFor="let m of modalidades" [value]="m.nome">
+              {{ m.emoji }} {{ m.nome }}
+            </option>
+          </select>
+          <small class="dica-campo">
+            Define a métrica de acompanhamento:
+            <span *ngIf="categoriaMetricaAtual === 'distancia'">📏 Distância em km</span>
+            <span *ngIf="categoriaMetricaAtual === 'duracao'">⏱ Duração em minutos</span>
+            <span *ngIf="categoriaMetricaAtual === 'sessoes'">🔢 Número de sessões/partidas</span>
+            <span *ngIf="categoriaMetricaAtual === 'personalizado'">✏️ Unidade personalizada</span>
+          </small>
+        </div>
+
+        <!-- Unidade personalizada (apenas para "Outro") -->
+        <div class="campo-formulario" *ngIf="categoriaMetricaAtual === 'personalizado'">
+          <label for="unidadePersonalizada">Unidade da Métrica</label>
+          <input
+            id="unidadePersonalizada"
+            name="unidadePersonalizada"
+            type="text"
+            [(ngModel)]="unidadePersonalizada"
+            placeholder="Ex: páginas, meditações, capítulos..."
+            required
+          />
         </div>
 
         <!-- Tipo e Formato em 2 colunas -->
@@ -118,9 +148,9 @@
             />
           </div>
 
-          <!-- Objetivo -->
+          <!-- Objetivo com label dinâmico -->
           <div class="campo-formulario">
-            <label for="objetivo">Objetivo (km)</label>
+            <label for="objetivo">{{ labelObjetivo }}</label>
             <input
               id="objetivo"
               name="objetivo"
@@ -128,7 +158,7 @@
               min="1"
               [(ngModel)]="objetivo"
               required
-              placeholder="Ex: 50"
+              [placeholder]="placeholderObjetivo"
             />
           </div>
         </div>
@@ -203,7 +233,7 @@
       <div class="cartao-padrao cartao-nota-conceito">
         <h5>💡 Como funciona o compromisso?</h5>
         <p>
-          Ao criar um desafio, você estabelece um pré-comprometimento concreto. Os participantes validam seus treinos através do envio de comprovações oficiais avaliadas por <strong>{{ arbitro }}</strong>.
+          Ao criar um desafio, você estabelece um pré-comprometimento concreto. Os participantes validam seus registros através do envio de comprovações oficiais avaliadas por <strong>{{ arbitro }}</strong>.
         </p>
       </div>
     </div>

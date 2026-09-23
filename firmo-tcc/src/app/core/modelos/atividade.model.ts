@@ -4,7 +4,10 @@ export interface Atividade {
   participante: string;
   usuarioId: number;
   tipo: string;
-  distancia: number;
+  /** Valor genérico da métrica acumulada (km, min, sessões ou unidade livre do desafio) */
+  valorMetrica: number;
+  /** @deprecated Mantido para compatibilidade; equivale a valorMetrica em desafios de distância */
+  distancia?: number;
   tempo: string;
   comprovacao: string;
   codigoValidacao: string;
