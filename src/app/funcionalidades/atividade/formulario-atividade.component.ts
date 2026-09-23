@@ -165,8 +165,8 @@ export class FormularioAtividadeComponent implements OnInit {
       valorMetrica: Number(this.valorMetrica),
       unidade: this.unidade,
       tempo: this.tempo,
-      comprovacao: this.imagemComprovacao || undefined,
-      codigoValidacao: this.codigoValidacao
+      comprovacao: this.desafio?.local === 'presencial' ? undefined : (this.imagemComprovacao || undefined),
+      codigoValidacao: this.desafio?.local === 'presencial' ? undefined : this.codigoValidacao
     });
 
     this.enviando = false;

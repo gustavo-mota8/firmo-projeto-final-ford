@@ -26,7 +26,9 @@ export class CriarDesafioComponent {
   formato: 'gratuito' | 'caucao' = 'caucao';
   entrada: number = 30;
   objetivo: number = 50;
-  duracao: string = '30 dias';
+  local: 'presencial' | 'online' = 'online';
+  dataInicio: string = '';
+  dataFim: string = '';
   premiacao: string = 'Top 3';
   arbitro: string = 'Carlos Almeida';
   descricao: string = '';
@@ -48,6 +50,7 @@ export class CriarDesafioComponent {
   unidadePersonalizada: string = '';
 
   arbitrosDisponiveis: string[] = [
+    'Eu mesmo',
     'Carlos Almeida',
     'Fernanda Lima',
     'Mariana Souza',
@@ -113,12 +116,13 @@ export class CriarDesafioComponent {
       unidade: this.unidadeAtual,
       modalidade: this.modalidadeSelecionada,
       categoriaMetrica: this.categoriaMetricaAtual,
+      local: this.local,
       progressoUsuario: 0,
-      duracao: this.duracao,
+      dataInicio: this.dataInicio || '24/09/2026',
       arbitro: this.arbitro,
       participantesCount: this.tipo === 'grupo' ? 20 : 1,
       premiacao: this.premiacao,
-      dataFim: 'Em breve',
+      dataFim: this.dataFim || 'Em breve',
       regras: [
         'Comprovação por foto com código físico na cena',
         'Código de validação anti-fraude',
@@ -147,7 +151,9 @@ export class CriarDesafioComponent {
       formato: this.formato,
       entrada: this.formato === 'caucao' ? this.entrada : 0,
       objetivo: this.objetivo,
-      duracao: this.duracao,
+      local: this.local,
+      dataInicio: this.dataInicio,
+      dataFim: this.dataFim,
       premiacao: this.premiacao,
       arbitro: this.arbitro,
       descricao: this.descricao,

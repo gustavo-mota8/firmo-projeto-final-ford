@@ -7,7 +7,7 @@
       Voltar para o desafio
     </a>
 
-    <h1 class="titulo-pagina">Registrar Atividade</h1>
+    <h1 class="titulo-pagina">{{ desafio?.local === 'presencial' ? 'Registrar Resultado' : 'Registrar Atividade' }}</h1>
     <p class="subtitulo-pagina" *ngIf="desafio">
       Submetendo para: <strong>{{ desafio.nome }}</strong> (Árbitro: {{ desafio.arbitro }})
     </p>
@@ -170,7 +170,7 @@
         </div>
 
         <!-- Comprovação (Upload da Foto com Evidência + Código) -->
-        <div class="campo-formulario">
+        <div class="campo-formulario" *ngIf="desafio?.local !== 'presencial'">
           <label>Foto de Comprovação (Evidência + Código Físico)</label>
           <div class="area-upload-arquivo">
             <input
@@ -199,7 +199,7 @@
         </div>
 
         <!-- Bloco do Código de Comprovação -->
-        <div class="bloco-codigo-autenticacao" *ngIf="ehDesafioCaucao; else blocoGratuito">
+        <div class="bloco-codigo-autenticacao" *ngIf="ehDesafioCaucao && desafio?.local !== 'presencial'; else blocoGratuito">
           <div class="cabecalho-codigo-autenticacao">
             <div class="rotulo-com-icone">
               <span class="icone-chave">🔐</span>
@@ -223,7 +223,7 @@
         </div>
 
         <ng-template #blocoGratuito>
-          <div class="bloco-codigo-gratuito">
+          <div class="bloco-codigo-gratuito" *ngIf="desafio?.local !== 'presencial'">
             <div class="info-gratuito-header">
               <span class="icone-info-gratuito">🆓</span>
               <strong>Desafio Gratuito</strong>
@@ -234,10 +234,9 @@
           </div>
         </ng-template>
 
-        <!-- Botão Submeter -->
         <div class="rodape-submissao">
           <button type="submit" class="botao botao-primario botao-lg" [disabled]="enviando">
-            <span *ngIf="!enviando">Enviar atividade</span>
+            <span *ngIf="!enviando">{{ desafio?.local === 'presencial' ? 'Enviar resultado' : 'Enviar atividade' }}</span>
             <span *ngIf="enviando">Enviando...</span>
           </button>
         </div>

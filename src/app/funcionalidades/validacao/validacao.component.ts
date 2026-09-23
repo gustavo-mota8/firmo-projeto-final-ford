@@ -65,9 +65,9 @@ export class ValidacaoComponent implements OnInit {
     return this.desafioService.obterDesafioPorId(desafioId);
   }
 
-  ehDesafioCaucao(atividade: Atividade): boolean {
+  exigeCodigoFisico(atividade: Atividade): boolean {
     const desafio = this.obterDesafio(atividade.desafioId);
-    return desafio?.formato === 'caucao';
+    return desafio?.formato === 'caucao' && desafio?.local !== 'presencial';
   }
 
   codigoCorresponde(atividade: Atividade): boolean {
@@ -76,7 +76,7 @@ export class ValidacaoComponent implements OnInit {
   }
 
   confirmarCodigoIdentificado(atividade: Atividade, codigo?: string): void {
-    this.codigosIdentificados[atividade.id] = codigo || atividade.codigoValidacao;
+    this.codigosIdentificados[atividade.id] = codigo || atividade.codigoValidacao || '';
   }
 
   limparCodigoIdentificado(atividade: Atividade): void {
@@ -84,13 +84,11 @@ export class ValidacaoComponent implements OnInit {
   }
 
   aprovar(atividade: Atividade): void {
-    // Regra de aprovação para desafios com caução:
-    // Evidência válida + código físico visível + código correspondente + validação do árbitro
-    if (this.ehDesafioCaucao(atividade) && !this.codigoCorresponde(atividade)) {
+    if (this.exigeCodigoFisico(atividade) && !this.codigoCorresponde(atividade)) {
       this.mensagemFeedback = {
         tipo: 'erro',
         titulo: 'Código físico não conferido!',
-        detalhe: `Para desafios com caução, a atividade só pode ser aprovada se o código físico na evidência for verificado e corresponder ao código esperado (${atividade.codigoValidacao}). Caso o código não confira, rejeite a atividade.`
+        detalhe: `Para desafios com caução online, a atividade só pode ser aprovada se o código físico na evidência for verificado e corresponder ao código esperado (${atividade.codigoValidacao}). Caso o código não confira, rejeite a atividade.`
       };
 
       setTimeout(() => {
@@ -128,7 +126,7 @@ export class ValidacaoComponent implements OnInit {
     this.mensagemFeedback = {
       tipo: 'sucesso',
       titulo: 'Atividade aprovada com sucesso!',
-      detalhe: `Autenticidade e evidência verificadas! ${atividade.participante} alcançou a posição #${novaPosicao} no ranking com +${atividade.valorMetrica} ${unidade}!`
+      detalhe: `Autenticidade verificada! ${atividade.participante} alcançou a posição #${novaPosicao} no ranking com +${atividade.valorMetrica} ${unidade}!`
     };
 
     setTimeout(() => {
@@ -138,7 +136,7 @@ export class ValidacaoComponent implements OnInit {
 
   iniciarRejeicao(atividade: Atividade): void {
     this.atividadeRejeitando = atividade;
-    if (this.ehDesafioCaucao(atividade) && !this.codigoCorresponde(atividade)) {
+    if (this.exigeCodigoFisico(atividade) && !this.codigoCorresponde(atividade)) {
       this.motivoRejeicao = 'Código não corresponde ou não está visível na evidência';
     } else {
       this.motivoRejeicao = 'A comprovação não está clara';
@@ -172,7 +170,7 @@ export class ValidacaoComponent implements OnInit {
   }
 
   verEvidencia(atividade: Atividade): void {
-    this.evidenciaSelecionada = atividade.comprovacao;
+    this.evidenciaSelecionada = atividade.comprovacao || '';
     this.atividadeModalAtual = atividade;
     this.modalEvidenciaAberta = true;
   }

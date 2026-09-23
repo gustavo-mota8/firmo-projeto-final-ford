@@ -9,8 +9,8 @@ export interface Atividade {
   /** @deprecated Mantido para compatibilidade; equivale a valorMetrica em desafios de distância */
   distancia?: number;
   tempo: string;
-  comprovacao: string;
-  codigoValidacao: string;
+  comprovacao?: string;
+  codigoValidacao?: string;
   status: 'pendente' | 'aprovada' | 'rejeitada';
   dataEnvio: string;
   motivoRejeicao?: string;

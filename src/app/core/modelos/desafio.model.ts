@@ -16,8 +16,11 @@ export interface Desafio {
   modalidade: string;
   /** Define qual métrica é usada no registro e no progresso do desafio */
   categoriaMetrica: CategoriaMetrica;
+  /** Formato do evento: 'presencial' para eventos físicos ou 'online' para registro via app */
+  local: 'presencial' | 'online';
   progressoUsuario: number;
-  duracao: string;
+  dataInicio: string;
+  duracao?: string;
   arbitro: string;
   participantesCount: number;
   premiacao: string;

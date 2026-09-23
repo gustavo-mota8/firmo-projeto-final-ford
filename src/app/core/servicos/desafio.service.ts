@@ -17,7 +17,9 @@ const DESAFIOS_INICIAIS: Desafio[] = [
     unidade: 'km',
     modalidade: 'Corrida',
     categoriaMetrica: 'distancia',
+    local: 'online',
     progressoUsuario: 37.5,
+    dataInicio: '01/09/2026',
     duracao: '30 dias',
     arbitro: 'Carlos Almeida',
     participantesCount: 20,
@@ -43,7 +45,9 @@ const DESAFIOS_INICIAIS: Desafio[] = [
     unidade: 'km',
     modalidade: 'Ciclismo',
     categoriaMetrica: 'distancia',
+    local: 'online',
     progressoUsuario: 62.0,
+    dataInicio: '01/10/2026',
     duracao: '15 dias',
     arbitro: 'Fernanda Lima',
     participantesCount: 25,
@@ -59,7 +63,7 @@ const DESAFIOS_INICIAIS: Desafio[] = [
   {
     id: 3,
     nome: 'Liga Futevôlei — 21 Partidas',
-    descricao: 'Reúna sua turma e dispute 21 partidas de futevôlei em 30 dias. Cada partida deve ser registrada com comprovação e validada pelo árbitro oficial da liga.',
+    descricao: 'Reúna sua turma e dispute 21 partidas de futevôlei presencialmente. Cada partida deve ser registrada com comprovação e validada pelo árbitro oficial da liga.',
     tipo: 'grupo',
     formato: 'caucao',
     entrada: 20,
@@ -68,7 +72,9 @@ const DESAFIOS_INICIAIS: Desafio[] = [
     unidade: 'partidas',
     modalidade: 'Futevôlei',
     categoriaMetrica: 'sessoes',
+    local: 'presencial',
     progressoUsuario: 0,
+    dataInicio: '21/09/2026',
     duracao: '30 dias',
     arbitro: 'Carlos Almeida',
     participantesCount: 20,
@@ -76,9 +82,8 @@ const DESAFIOS_INICIAIS: Desafio[] = [
     dataFim: '21/10/2026',
     regras: [
       'Cada partida contabiliza 1 ponto de progresso',
-      'Comprovação por foto da quadra com todos os participantes',
-      'Código físico deve estar visível na foto',
-      'Validação obrigatória pelo árbitro em até 24h'
+      'Resultados reportados presencialmente',
+      'Validação obrigatória pelo árbitro'
     ],
     inscrito: false
   },
@@ -94,7 +99,9 @@ const DESAFIOS_INICIAIS: Desafio[] = [
     unidade: 'min',
     modalidade: 'Academia',
     categoriaMetrica: 'duracao',
+    local: 'online',
     progressoUsuario: 0,
+    dataInicio: '01/10/2026',
     duracao: '30 dias',
     arbitro: 'Mariana Souza',
     participantesCount: 1,
@@ -120,7 +127,9 @@ const DESAFIOS_INICIAIS: Desafio[] = [
     unidade: 'jogos',
     modalidade: 'Vôlei',
     categoriaMetrica: 'sessoes',
+    local: 'presencial',
     progressoUsuario: 0,
+    dataInicio: '01/10/2026',
     duracao: '30 dias',
     arbitro: 'Ricardo Mendes',
     participantesCount: 12,
@@ -128,7 +137,7 @@ const DESAFIOS_INICIAIS: Desafio[] = [
     dataFim: '30/10/2026',
     regras: [
       'Mínimo de 1 set por registro',
-      'Foto com pelo menos um companheiro de equipe e o código físico',
+      'Resultados lançados pós jogo e validados pelo árbitro',
       'Máximo de 1 jogo computado por dia'
     ],
     inscrito: false
@@ -145,7 +154,9 @@ const DESAFIOS_INICIAIS: Desafio[] = [
     unidade: 'km',
     modalidade: 'Corrida',
     categoriaMetrica: 'distancia',
+    local: 'online',
     progressoUsuario: 0,
+    dataInicio: '24/09/2026',
     duracao: '21 dias',
     arbitro: 'Fernanda Lima',
     participantesCount: 54,
@@ -183,13 +194,15 @@ export class DesafioService {
     formato: 'gratuito' | 'caucao';
     entrada: number;
     objetivo: number;
-    duracao: string;
+    dataInicio: string;
+    dataFim: string;
     premiacao: string;
     arbitro: string;
     descricao?: string;
     modalidade?: string;
     categoriaMetrica?: CategoriaMetrica;
     unidade?: string;
+    local: 'presencial' | 'online';
   }): Desafio {
     const lista = this.desafiosSubject.value;
     const novoId = lista.length > 0 ? Math.max(...lista.map(d => d.id)) + 1 : 1;
@@ -199,10 +212,21 @@ export class DesafioService {
     const categoriaMetrica: CategoriaMetrica = novo.categoriaMetrica || 'distancia';
     const unidade = novo.unidade || 'km';
 
+    const regras = novo.local === 'presencial' 
+      ? [
+          'Validação presencial por resultado',
+          `Arbitragem conduzida por ${novo.arbitro}`
+        ]
+      : [
+          'Comprovação por foto com código físico na cena',
+          'Código de validação de 4 dígitos obrigatório',
+          `Arbitragem conduzida por ${novo.arbitro}`
+        ];
+
     const desafioCriado: Desafio = {
       id: novoId,
       nome: novo.nome,
-      descricao: novo.descricao || `Desafio de ${novo.objetivo} ${unidade} com duração de ${novo.duracao}. Compromisso assumido na Firmo.`,
+      descricao: novo.descricao || `Desafio de ${novo.objetivo} ${unidade}. Compromisso assumido na Firmo.`,
       tipo: novo.tipo,
       formato: novo.formato,
       entrada: novo.formato === 'caucao' ? novo.entrada : 0,
@@ -211,17 +235,14 @@ export class DesafioService {
       unidade,
       modalidade,
       categoriaMetrica,
+      local: novo.local,
       progressoUsuario: 0,
-      duracao: novo.duracao,
+      dataInicio: novo.dataInicio,
       arbitro: novo.arbitro,
       participantesCount: participantesIniciais,
       premiacao: novo.premiacao,
-      dataFim: '30 dias a partir de hoje',
-      regras: [
-        `Comprovação por foto com código físico na cena`,
-        `Código de validação de 4 dígitos obrigatório`,
-        `Arbitragem conduzida por ${novo.arbitro}`
-      ],
+      dataFim: novo.dataFim,
+      regras,
       inscrito: true
     };
 
@@ -272,7 +293,9 @@ export class DesafioService {
         return parsed.map(d => ({
           ...d,
           modalidade: d.modalidade || 'Corrida',
-          categoriaMetrica: d.categoriaMetrica || 'distancia'
+          categoriaMetrica: d.categoriaMetrica || 'distancia',
+          local: d.local || 'online',
+          dataInicio: d.dataInicio || '24/09/2026'
         }));
       }
     } catch {

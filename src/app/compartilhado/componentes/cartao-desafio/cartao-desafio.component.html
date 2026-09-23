@@ -8,8 +8,11 @@
         {{ desafio.formato === 'caucao' ? '💰 Caução' : '🆓 Gratuito' }}
       </span>
       <span class="emblema emblema-grupo" *ngIf="desafio.modalidade">🏅 {{ desafio.modalidade }}</span>
+      <span class="emblema" [ngClass]="desafio.local === 'presencial' ? 'emblema-grupo' : 'emblema-caucao'">
+        {{ desafio.local === 'presencial' ? '🌍 Presencial' : '🌐 Online' }}
+      </span>
     </div>
-    <span class="duracao-badge">⏱ {{ desafio.duracao }}</span>
+    <span class="duracao-badge">🗓 {{ desafio.dataInicio }} até {{ desafio.dataFim }}</span>
   </div>
 
   <h3 class="nome-desafio">{{ desafio.nome }}</h3>

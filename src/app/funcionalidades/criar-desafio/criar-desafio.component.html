@@ -106,9 +106,35 @@
             </div>
           </div>
 
-          <!-- Formato -->
+          <!-- Local/Formato do Evento -->
           <div class="campo-formulario">
-            <label>Formato Financeiro</label>
+            <label>Formato do Evento</label>
+            <div class="opcoes-radio">
+              <label class="item-radio" [class.selecionado]="local === 'presencial'">
+                <input
+                  type="radio"
+                  name="local"
+                  value="presencial"
+                  [(ngModel)]="local"
+                />
+                <span>Presencial</span>
+              </label>
+              <label class="item-radio" [class.selecionado]="local === 'online'">
+                <input
+                  type="radio"
+                  name="local"
+                  value="online"
+                  [(ngModel)]="local"
+                />
+                <span>Online</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formato Financeiro -->
+        <div class="campo-formulario">
+          <label>Formato Financeiro</label>
             <div class="opcoes-radio">
               <label class="item-radio" [class.selecionado]="formato === 'gratuito'">
                 <input
@@ -130,7 +156,6 @@
               </label>
             </div>
           </div>
-        </div>
 
         <!-- Entrada e Objetivo -->
         <div class="grade-campos-dupla">
@@ -165,17 +190,18 @@
 
         <!-- Duração e Premiação -->
         <div class="grade-campos-dupla">
-          <!-- Duração -->
+          <!-- Datas -->
           <div class="campo-formulario">
-            <label for="duracao">Duração</label>
-            <select id="duracao" name="duracao" [(ngModel)]="duracao">
-              <option value="7 dias">7 dias (1 semana)</option>
-              <option value="15 dias">15 dias</option>
-              <option value="30 dias">30 dias (1 mês)</option>
-              <option value="60 dias">60 dias</option>
-            </select>
+            <label for="dataInicio">Data de Início</label>
+            <input type="date" id="dataInicio" name="dataInicio" [(ngModel)]="dataInicio" required />
           </div>
+          <div class="campo-formulario">
+            <label for="dataFim">Data de Término</label>
+            <input type="date" id="dataFim" name="dataFim" [(ngModel)]="dataFim" required />
+          </div>
+        </div>
 
+        <div class="grade-campos-dupla">
           <!-- Premiação -->
           <div class="campo-formulario">
             <label for="premiacao">Premiação</label>
@@ -232,8 +258,11 @@
 
       <div class="cartao-padrao cartao-nota-conceito">
         <h5>💡 Como funciona o compromisso?</h5>
-        <p>
-          Ao criar um desafio, você estabelece um pré-comprometimento concreto. Os participantes validam seus registros através do envio de comprovações oficiais avaliadas por <strong>{{ arbitro }}</strong>.
+        <p *ngIf="local === 'online'">
+          Ao criar um desafio online, você estabelece um pré-comprometimento concreto. Os participantes validam seus registros através do envio de comprovações oficiais com código físico, avaliadas por <strong>{{ arbitro }}</strong>.
+        </p>
+        <p *ngIf="local === 'presencial'">
+          Ao criar um desafio presencial, a validação é feita diretamente pelo resultado ou placar do evento. Não há exigência de envio de foto com código físico. O árbitro <strong>{{ arbitro }}</strong> é responsável por registrar e aprovar os resultados.
         </p>
       </div>
     </div>

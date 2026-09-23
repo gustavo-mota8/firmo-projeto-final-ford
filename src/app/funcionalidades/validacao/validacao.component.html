@@ -76,14 +76,14 @@
               <strong class="metrica-numero">{{ atividade.tempo }}</strong>
             </div>
 
-            <div class="caixa-metrica-validacao">
+            <div class="caixa-metrica-validacao" *ngIf="exigeCodigoFisico(atividade)">
               <span class="rotulo-dado">Código esperado:</span>
               <strong class="metrica-numero codigo-anti-fraude">{{ atividade.codigoValidacao }}</strong>
             </div>
           </div>
 
-          <!-- Painel de conferência do código físico (apenas caução) -->
-          <div class="painel-conferencia-codigo" *ngIf="ehDesafioCaucao(atividade)">
+          <!-- Painel de conferência do código físico (apenas caução online) -->
+          <div class="painel-conferencia-codigo" *ngIf="exigeCodigoFisico(atividade)">
             <div class="cabecalho-conferencia">
               <span class="icone-conferencia">🔐</span>
               <span class="rotulo-dado">Verificação do Código Físico na Evidência</span>
@@ -146,7 +146,7 @@
           </div>
 
           <!-- Prévia da Evidência / Imagem -->
-          <div class="bloco-evidencia">
+          <div class="bloco-evidencia" *ngIf="obterDesafio(atividade.desafioId)?.local !== 'presencial'">
             <div class="cabecalho-evidencia">
               <span class="rotulo-dado">Comprovação:</span>
               <button
@@ -202,14 +202,14 @@
           <button
             class="botao botao-sucesso botao-lg botao-flex"
             (click)="aprovar(atividade)"
-            [disabled]="ehDesafioCaucao(atividade) && !codigoCorresponde(atividade)"
-            [title]="ehDesafioCaucao(atividade) && !codigoCorresponde(atividade) ? 'Confirme o código físico antes de aprovar' : ''"
+            [disabled]="exigeCodigoFisico(atividade) && !codigoCorresponde(atividade)"
+            [title]="exigeCodigoFisico(atividade) && !codigoCorresponde(atividade) ? 'Confirme o código físico antes de aprovar' : ''"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
-            <span *ngIf="!ehDesafioCaucao(atividade) || codigoCorresponde(atividade)">Aprovar atividade</span>
-            <span *ngIf="ehDesafioCaucao(atividade) && !codigoCorresponde(atividade)">🔒 Confirme o código</span>
+            <span *ngIf="!exigeCodigoFisico(atividade) || codigoCorresponde(atividade)">Aprovar atividade</span>
+            <span *ngIf="exigeCodigoFisico(atividade) && !codigoCorresponde(atividade)">🔒 Confirme o código</span>
           </button>
 
           <button class="botao botao-perigo botao-flex" (click)="iniciarRejeicao(atividade)">
@@ -258,7 +258,7 @@
             <td>{{ a.tipo }}</td>
             <td>{{ a.valorMetrica }} {{ obterDesafio(a.desafioId)?.unidade }}</td>
             <td>{{ a.tempo }}</td>
-            <td><code>{{ a.codigoValidacao }}</code></td>
+            <td><code>{{ a.codigoValidacao || '-' }}</code></td>
             <td>
               <span
                 class="emblema"

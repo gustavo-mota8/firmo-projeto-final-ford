@@ -108,10 +108,21 @@ export class AtividadeService {
     unidade: string;
     tempo: string;
     comprovacao?: string;
-    codigoValidacao: string;
+    codigoValidacao?: string;
   }): Atividade {
     const lista = this.atividadesSubject.value;
     const novoId = lista.length > 0 ? Math.max(...lista.map(a => a.id)) + 1 : 1;
+
+    let comprovacaoFinal = dados.comprovacao;
+    if (!comprovacaoFinal && dados.codigoValidacao) {
+      comprovacaoFinal = gerarComprovacaoMock(
+        dados.codigoValidacao,
+        dados.valorMetrica,
+        dados.unidade,
+        dados.tempo,
+        dados.participante
+      );
+    }
 
     const novaAtividade: Atividade = {
       id: novoId,
@@ -122,13 +133,7 @@ export class AtividadeService {
       valorMetrica: dados.valorMetrica,
       distancia: dados.unidade === 'km' ? dados.valorMetrica : undefined,
       tempo: dados.tempo,
-      comprovacao: dados.comprovacao || gerarComprovacaoMock(
-        dados.codigoValidacao,
-        dados.valorMetrica,
-        dados.unidade,
-        dados.tempo,
-        dados.participante
-      ),
+      comprovacao: comprovacaoFinal,
       codigoValidacao: dados.codigoValidacao,
       status: 'pendente',
       dataEnvio: 'Hoje, há poucos minutos'

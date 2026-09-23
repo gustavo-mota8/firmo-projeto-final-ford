@@ -18,7 +18,10 @@
           {{ desafio.formato === 'caucao' ? '💰 Caução' : '🆓 Gratuito' }}
         </span>
         <span class="emblema emblema-grupo">🏅 {{ desafio.modalidade }}</span>
-        <span class="duracao-tag">⏱ Duração: {{ desafio.duracao }}</span>
+        <span class="emblema" [ngClass]="desafio.local === 'presencial' ? 'emblema-grupo' : 'emblema-caucao'">
+          {{ desafio.local === 'presencial' ? '🌍 Presencial' : '🌐 Online' }}
+        </span>
+        <span class="duracao-tag">🗓 Início: {{ desafio.dataInicio }}</span>
       </div>
 
       <span class="status-inscricao" *ngIf="desafio.inscrito">
@@ -93,7 +96,7 @@
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
-          Registrar atividade
+          {{ desafio.local === 'presencial' ? 'Registrar resultado' : 'Registrar atividade' }}
         </a>
 
         <button
@@ -202,7 +205,7 @@
             <strong>Resultado:</strong> {{ atividade.valorMetrica }} {{ desafio.unidade }}
           </span>
           <span *ngIf="desafio.categoriaMetrica !== 'duracao'"><strong>Tempo:</strong> {{ atividade.tempo }}</span>
-          <span><strong>Código:</strong> {{ atividade.codigoValidacao }}</span>
+          <span><strong>Código:</strong> {{ atividade.codigoValidacao || '-' }}</span>
         </div>
 
         <div class="motivo-rejeicao-box" *ngIf="atividade.motivoRejeicao">
