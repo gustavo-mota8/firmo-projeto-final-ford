@@ -64,22 +64,48 @@
             <span class="valor-dado">{{ atividade.tipo }}</span>
           </div>
 
-          <!-- Métricas -->
+          <!-- Métricas ou Confronto -->
           <div class="grade-metricas-validacao" *ngIf="obterDesafio(atividade.desafioId) as desafio">
-            <div class="caixa-metrica-validacao">
-              <span class="rotulo-dado">Resultado:</span>
-              <strong class="metrica-numero">{{ atividade.valorMetrica }} {{ desafio.unidade }}</strong>
-            </div>
+            <ng-container *ngIf="desafio.local !== 'presencial'">
+              <div class="caixa-metrica-validacao">
+                <span class="rotulo-dado">Resultado:</span>
+                <strong class="metrica-numero">{{ atividade.valorMetrica }} {{ desafio.unidade }}</strong>
+              </div>
 
-            <div class="caixa-metrica-validacao">
-              <span class="rotulo-dado">Tempo:</span>
-              <strong class="metrica-numero">{{ atividade.tempo }}</strong>
-            </div>
+              <div class="caixa-metrica-validacao">
+                <span class="rotulo-dado">Tempo:</span>
+                <strong class="metrica-numero">{{ atividade.tempo }}</strong>
+              </div>
 
-            <div class="caixa-metrica-validacao" *ngIf="exigeCodigoFisico(atividade)">
-              <span class="rotulo-dado">Código esperado:</span>
-              <strong class="metrica-numero codigo-anti-fraude">{{ atividade.codigoValidacao }}</strong>
-            </div>
+              <div class="caixa-metrica-validacao" *ngIf="exigeCodigoFisico(atividade)">
+                <span class="rotulo-dado">Código esperado:</span>
+                <strong class="metrica-numero codigo-anti-fraude">{{ atividade.codigoValidacao }}</strong>
+              </div>
+            </ng-container>
+
+            <!-- Confronto Presencial -->
+            <ng-container *ngIf="desafio.local === 'presencial'">
+              <div class="caixa-metrica-validacao" style="grid-column: span 2;">
+                <span class="rotulo-dado">Confronto:</span>
+                <strong class="metrica-numero">
+                  {{ atividade.equipe1 }} {{ atividade.placar1 !== undefined ? '(' + atividade.placar1 + ')' : '' }}
+                  X
+                  {{ atividade.equipe2 }} {{ atividade.placar2 !== undefined ? '(' + atividade.placar2 + ')' : '' }}
+                </strong>
+              </div>
+              <div class="caixa-metrica-validacao">
+                <span class="rotulo-dado">Data:</span>
+                <strong class="metrica-numero">{{ atividade.dataConfronto | date:'dd/MM/yyyy' }}</strong>
+              </div>
+              <div class="caixa-metrica-validacao">
+                <span class="rotulo-dado">Vencedor:</span>
+                <strong class="metrica-numero">{{ atividade.vencedor }}</strong>
+              </div>
+              <div class="caixa-metrica-validacao" style="grid-column: span 3;" *ngIf="atividade.observacao">
+                <span class="rotulo-dado">Observação:</span>
+                <span class="metrica-numero" style="font-size: 14px; font-weight: normal;">{{ atividade.observacao }}</span>
+              </div>
+            </ng-container>
           </div>
 
           <!-- Painel de conferência do código físico (apenas caução online) -->
@@ -256,8 +282,16 @@
           <tr *ngFor="let a of atividadesAvaliadas">
             <td><strong>{{ a.participante }}</strong></td>
             <td>{{ a.tipo }}</td>
-            <td>{{ a.valorMetrica }} {{ obterDesafio(a.desafioId)?.unidade }}</td>
-            <td>{{ a.tempo }}</td>
+            <td>
+              <ng-container *ngIf="obterDesafio(a.desafioId)?.local === 'presencial'">
+                {{ a.equipe1 }} x {{ a.equipe2 }} <br>
+                <small>Vencedor: {{ a.vencedor }}</small>
+              </ng-container>
+              <ng-container *ngIf="obterDesafio(a.desafioId)?.local !== 'presencial'">
+                {{ a.valorMetrica }} {{ obterDesafio(a.desafioId)?.unidade }}
+              </ng-container>
+            </td>
+            <td>{{ a.tempo || '-' }}</td>
             <td><code>{{ a.codigoValidacao || '-' }}</code></td>
             <td>
               <span

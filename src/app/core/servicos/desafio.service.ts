@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Desafio, CategoriaMetrica } from '../modelos/desafio.model';
+import { RankingService } from './ranking.service';
 
 const CHAVE_STORAGE = 'firmo_desafios';
 
@@ -176,16 +178,38 @@ const DESAFIOS_INICIAIS: Desafio[] = [
 })
 export class DesafioService {
   private desafiosSubject = new BehaviorSubject<Desafio[]>(this.carregarDoStorage());
-  public desafios$: Observable<Desafio[]> = this.desafiosSubject.asObservable();
+  
+  // Combina desafios com o ranking para garantir que o número de participantes seja sempre real
+  public desafios$: Observable<Desafio[]>;
 
-  constructor() {}
+  constructor(private rankingService: RankingService) {
+    this.desafios$ = combineLatest([
+      this.desafiosSubject.asObservable(),
+      this.rankingService.rankings$
+    ]).pipe(
+      map(([desafios, rankings]) => {
+        return desafios.map(d => ({
+          ...d,
+          participantesCount: rankings[d.id] ? rankings[d.id].length : 0
+        }));
+      })
+    );
+  }
 
   public obterDesafios(): Desafio[] {
-    return this.desafiosSubject.value;
+    const desafios = this.desafiosSubject.value;
+    const rankings = this.rankingService.obterTodosRankings(); // Precisamos adicionar isso no RankingService
+    return desafios.map(d => ({
+      ...d,
+      participantesCount: rankings[d.id] ? rankings[d.id].length : 0
+    }));
   }
 
   public obterDesafioPorId(id: number): Desafio | undefined {
-    return this.desafiosSubject.value.find(d => d.id === id);
+    const d = this.desafiosSubject.value.find(d => d.id === id);
+    if (!d) return undefined;
+    const ranking = this.rankingService.obterRankingPorDesafio(id);
+    return { ...d, participantesCount: ranking.length };
   }
 
   public criarDesafio(novo: {

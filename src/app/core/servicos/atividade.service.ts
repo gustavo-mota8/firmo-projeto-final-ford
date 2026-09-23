@@ -109,6 +109,13 @@ export class AtividadeService {
     tempo: string;
     comprovacao?: string;
     codigoValidacao?: string;
+    equipe1?: string;
+    equipe2?: string;
+    placar1?: number;
+    placar2?: number;
+    vencedor?: string;
+    dataConfronto?: string;
+    observacao?: string;
   }): Atividade {
     const lista = this.atividadesSubject.value;
     const novoId = lista.length > 0 ? Math.max(...lista.map(a => a.id)) + 1 : 1;
@@ -136,7 +143,14 @@ export class AtividadeService {
       comprovacao: comprovacaoFinal,
       codigoValidacao: dados.codigoValidacao,
       status: 'pendente',
-      dataEnvio: 'Hoje, há poucos minutos'
+      dataEnvio: 'Hoje, há poucos minutos',
+      equipe1: dados.equipe1,
+      equipe2: dados.equipe2,
+      placar1: dados.placar1,
+      placar2: dados.placar2,
+      vencedor: dados.vencedor,
+      dataConfronto: dados.dataConfronto,
+      observacao: dados.observacao
     };
 
     const listaAtualizada = [novaAtividade, ...lista];

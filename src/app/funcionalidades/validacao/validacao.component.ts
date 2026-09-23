@@ -109,24 +109,39 @@ export class ValidacaoComponent implements OnInit {
     // 3. Atualiza no DesafioService (aumenta o progresso do usuário)
     this.desafioService.atualizarProgressoDesafio(atividade.desafioId, atividade.valorMetrica);
 
-    // 4. Atualiza no RankingService (sobe de posição no ranking)
-    this.rankingService.atualizarDistanciaUsuario(
-      atividade.desafioId,
-      atividade.usuarioId,
-      atividade.valorMetrica,
-      pontosCalculados
-    );
+    let ganhadores = [atividade.participante];
 
-    // 5. Atualiza no UsuarioService (saldo total de km e pontos)
+    if (desafio?.local === 'presencial' && atividade.vencedor && atividade.vencedor !== 'Empate') {
+      // Split the winner string by " + ", " e ", ","
+      ganhadores = atividade.vencedor.split(/\s*\+\s*|\s+e\s+|\s*,\s*/).filter(nome => nome.trim() !== '');
+    } else if (desafio?.local === 'presencial' && atividade.vencedor === 'Empate') {
+      ganhadores = [];
+    }
+
+    // 4. Atualiza no RankingService para cada ganhador (ou remetente se online)
+    ganhadores.forEach(ganhador => {
+      this.rankingService.atualizarDistanciaUsuario(
+        atividade.desafioId,
+        atividade.usuarioId, // This might just map the first user id, but ranking uses nomeParticipante to find/create
+        atividade.valorMetrica,
+        pontosCalculados,
+        ganhador.trim()
+      );
+    });
+
+    // 5. Atualiza no UsuarioService (saldo total de km e pontos) - para o remetente apenas
     this.usuarioService.adicionarPontosEKm(atividade.valorMetrica, pontosCalculados);
 
-    // Nova posição no ranking
+    // Nova posição no ranking do rementente (ou primeiro ganhador)
+    const nomeExibicao = ganhadores.length > 0 ? ganhadores.join(' e ') : atividade.participante;
     const novaPosicao = this.rankingService.obterPosicaoUsuario(atividade.desafioId, atividade.usuarioId);
 
     this.mensagemFeedback = {
       tipo: 'sucesso',
       titulo: 'Atividade aprovada com sucesso!',
-      detalhe: `Autenticidade verificada! ${atividade.participante} alcançou a posição #${novaPosicao} no ranking com +${atividade.valorMetrica} ${unidade}!`
+      detalhe: desafio?.local === 'presencial' 
+        ? `Resultado registrado! ${nomeExibicao} recebeu os pontos da vitória no ranking.`
+        : `Autenticidade verificada! ${atividade.participante} alcançou a posição #${novaPosicao} no ranking com +${atividade.valorMetrica} ${unidade}!`
     };
 
     setTimeout(() => {

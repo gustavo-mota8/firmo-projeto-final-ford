@@ -3,14 +3,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ItemRanking } from '../modelos/ranking.model';
 
 const CHAVE_STORAGE = 'firmo_rankings';
-const VERSAO_DADOS = 'v3'; // Incrementar ao alterar RANKINGS_INICIAIS para invalidar cache
+const VERSAO_DADOS = 'v5'; // Incrementar ao alterar RANKINGS_INICIAIS para invalidar cache
 const CHAVE_VERSAO = 'firmo_rankings_versao';
 
 interface TabelaRanking {
   [desafioId: number]: ItemRanking[];
 }
 
-const RANKINGS_INICIAIS: TabelaRanking = {
+const BASE_RANKINGS: TabelaRanking = {
   1: [
     {
       posicao: 1,
@@ -89,6 +89,76 @@ const RANKINGS_INICIAIS: TabelaRanking = {
   ]
 };
 
+const TARGET_COUNTS: { [id: number]: number } = {
+  1: 20,
+  2: 25,
+  3: 20,
+  4: 1,
+  5: 12,
+  6: 54
+};
+
+const TARGET_METRICS: { [id: number]: number } = {
+  1: 50,
+  2: 100,
+  3: 21,
+  4: 600,
+  5: 12,
+  6: 42
+};
+
+const NOMES_FICTICIOS = [
+  'Carlos Eduardo', 'Ana Beatriz', 'Felipe Santos', 'Mariana Costa', 'Rafael Silva',
+  'Juliana Alves', 'Thiago Moreira', 'Letícia Lima', 'Bruno Fernandes', 'Camila Rocha',
+  'Rodrigo Mendes', 'Amanda Ribeiro', 'Lucas Oliveira', 'Beatriz Gomes', 'Mateus Martins',
+  'Fernanda Souza', 'Gabriel Almeida', 'Larissa Ferreira', 'Pedro Carvalho', 'Vitória Dias',
+  'Diego Cardoso', 'Carolina Castro', 'Leonardo Barbosa', 'Isabella Melo', 'Marcelo Pinto',
+  'Sophia Cavalcanti', 'Henrique Azevedo', 'Laura Farias', 'Eduardo Correia', 'Alice Teixeira',
+  'Vinícius Pires', 'Manuela Nogueira', 'Tiago Machado', 'Giovanna Freitas', 'Caio Moura',
+  'Valentina Ramos', 'Arthur Monteiro', 'Helena Batista', 'Victor Guedes', 'Lorena Viana',
+  'André Borges', 'Clara Vieira', 'Daniel Moraes', 'Júlia Duarte', 'Renato Peixoto'
+];
+
+const RANKINGS_INICIAIS: TabelaRanking = (() => {
+  const tabela: TabelaRanking = { ...BASE_RANKINGS };
+  let nextId = 1000;
+  
+  for (const desafioId of Object.keys(TARGET_COUNTS)) {
+    const id = Number(desafioId);
+    const target = TARGET_COUNTS[id];
+    const lista = tabela[id] ? [...tabela[id]] : [];
+    const maxMetrica = TARGET_METRICS[id] || 50;
+    
+    // Nomes diferentes para cada desafio (embaralha a lista e pega sequencial)
+    let nomesDisponiveis = [...NOMES_FICTICIOS].sort(() => Math.random() - 0.5);
+    
+    while (lista.length < target) {
+      let nomeEscolhido = nomesDisponiveis.pop();
+      if (!nomeEscolhido) {
+        nomesDisponiveis = [...NOMES_FICTICIOS].sort(() => Math.random() - 0.5);
+        nomeEscolhido = nomesDisponiveis.pop() || `Atleta ${nextId}`;
+      }
+
+      lista.push({
+        posicao: 0,
+        usuarioId: nextId,
+        nome: nomeEscolhido,
+        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(nomeEscolhido)}&background=random`,
+        distancia: Number((Math.random() * maxMetrica).toFixed(1)),
+        pontos: Math.floor(Math.random() * 800),
+        ehUsuarioAtual: false
+      });
+      nextId++;
+    }
+    
+    lista.sort((a, b) => b.distancia - a.distancia);
+    lista.forEach((item, idx) => item.posicao = idx + 1);
+    tabela[id] = lista;
+  }
+  
+  return tabela;
+})();
+
 @Injectable({
   providedIn: 'root'
 })
@@ -97,6 +167,10 @@ export class RankingService {
   public rankings$: Observable<TabelaRanking> = this.rankingsSubject.asObservable();
 
   constructor() { }
+
+  public obterTodosRankings(): TabelaRanking {
+    return this.rankingsSubject.value;
+  }
 
   public obterRankingPorDesafio(desafioId: number): ItemRanking[] {
     const rankings = this.rankingsSubject.value;
@@ -113,7 +187,8 @@ export class RankingService {
     desafioId: number,
     usuarioId: number,
     kmAdicional: number,
-    pontosAdicionais: number
+    pontosAdicionais: number,
+    nomeParticipante: string = 'Gustavo Mota'
   ): void {
     const rankings = { ...this.rankingsSubject.value };
     const lista = rankings[desafioId] ? [...rankings[desafioId]] : [];
@@ -130,11 +205,11 @@ export class RankingService {
       lista.push({
         posicao: lista.length + 1,
         usuarioId,
-        nome: 'Gustavo Mota',
-        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
+        nome: nomeParticipante,
+        avatar: usuarioId === 1 ? 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80' : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(nomeParticipante),
         distancia: kmAdicional,
         pontos: pontosAdicionais,
-        ehUsuarioAtual: true
+        ehUsuarioAtual: usuarioId === 1
       });
     }
 
@@ -147,6 +222,25 @@ export class RankingService {
 
     rankings[desafioId] = listaReordenada;
     this.salvar(rankings);
+  }
+
+  public adicionarUsuarioAoRanking(desafioId: number, usuario: { id: number, nome: string, avatar: string }): void {
+    const rankings = { ...this.rankingsSubject.value };
+    const lista = rankings[desafioId] ? [...rankings[desafioId]] : [];
+
+    if (!lista.find(i => i.usuarioId === usuario.id)) {
+      lista.push({
+        posicao: lista.length + 1,
+        usuarioId: usuario.id,
+        nome: usuario.nome,
+        avatar: usuario.avatar,
+        distancia: 0,
+        pontos: 0,
+        ehUsuarioAtual: true
+      });
+      rankings[desafioId] = lista;
+      this.salvar(rankings);
+    }
   }
 
   private carregarDoStorage(): TabelaRanking {

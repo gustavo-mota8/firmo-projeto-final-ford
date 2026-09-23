@@ -32,6 +32,15 @@ export class FormularioAtividadeComponent implements OnInit {
   enviando: boolean = false;
   atividadeEnviada: Atividade | null = null;
 
+  // Campos de confronto presencial
+  equipe1: string = '';
+  equipe2: string = '';
+  placar1: number | null = null;
+  placar2: number | null = null;
+  vencedor: string = '';
+  dataConfronto: string = new Date().toISOString().split('T')[0]; // Hoje por padrão
+  observacao: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private desafioService: DesafioService,
@@ -141,13 +150,22 @@ export class FormularioAtividadeComponent implements OnInit {
   }
 
   submeterAtividade(): void {
-    if (!this.valorMetrica || this.valorMetrica <= 0) {
-      alert(`Por favor, informe um valor válido para: ${this.labelCampoMetrica}.`);
-      return;
-    }
+    const isPresencial = this.desafio?.local === 'presencial';
 
-    if (!this.codigoValidacao) {
-      this.gerarCodigoComprovacao();
+    if (isPresencial) {
+      if (!this.equipe1 || !this.equipe2 || !this.vencedor || !this.dataConfronto) {
+        alert('Preencha as equipes, o vencedor e a data do confronto.');
+        return;
+      }
+      this.valorMetrica = 1; // 1 unidade de confronto
+    } else {
+      if (!this.valorMetrica || this.valorMetrica <= 0) {
+        alert(`Por favor, informe um valor válido para: ${this.labelCampoMetrica}.`);
+        return;
+      }
+      if (!this.codigoValidacao) {
+        this.gerarCodigoComprovacao();
+      }
     }
 
     // Sincroniza o campo "tempo" para durações diretas
@@ -165,8 +183,15 @@ export class FormularioAtividadeComponent implements OnInit {
       valorMetrica: Number(this.valorMetrica),
       unidade: this.unidade,
       tempo: this.tempo,
-      comprovacao: this.desafio?.local === 'presencial' ? undefined : (this.imagemComprovacao || undefined),
-      codigoValidacao: this.desafio?.local === 'presencial' ? undefined : this.codigoValidacao
+      comprovacao: isPresencial ? undefined : (this.imagemComprovacao || undefined),
+      codigoValidacao: isPresencial ? undefined : this.codigoValidacao,
+      equipe1: isPresencial ? this.equipe1 : undefined,
+      equipe2: isPresencial ? this.equipe2 : undefined,
+      placar1: isPresencial ? (this.placar1 || 0) : undefined,
+      placar2: isPresencial ? (this.placar2 || 0) : undefined,
+      vencedor: isPresencial ? this.vencedor : undefined,
+      dataConfronto: isPresencial ? this.dataConfronto : undefined,
+      observacao: isPresencial ? this.observacao : undefined
     });
 
     this.enviando = false;
