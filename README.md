@@ -1,59 +1,55 @@
-# FirmoTcc
+# FIRMO — Seu compromisso, garantido.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+<p align="center">
+  <img src="src/assets/logo-firmo.png" alt="Logo FIRMO" width="180">
+</p>
 
-## Development server
+<p align="center">
+  Plataforma de desafios esportivos baseada em compromisso, competição e validação.
+</p>
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## 📌 Sobre o projeto
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+O **FIRMO** é uma plataforma web de desafios esportivos criada como projeto acadêmico/TCC.
 
-## Code scaffolding
+A proposta é transformar a intenção de praticar uma atividade em um **compromisso previamente definido**, utilizando mecanismos como:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- pré-compromisso;
+- desafios individuais e em grupo;
+- competições presenciais e online;
+- caução simulada;
+- ranking e pontuação;
+- validação por árbitro;
+- comprovação de atividades;
+- acompanhamento de progresso.
 
-```bash
-ng generate component component-name
-```
+O conceito parte de um problema comportamental simples:
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+> **As pessoas muitas vezes sabem o que precisam fazer, têm intenção de fazer, mas acabam adiando ou desistindo quando chega o momento da ação.**
 
-```bash
-ng generate --help
-```
+O FIRMO busca criar um ambiente no qual o participante assume previamente as regras, consequências e critérios de validação do desafio.
 
-## Building
+---
 
-To build the project run:
+## 🎯 Objetivo
 
-```bash
-ng build
-```
+Demonstrar como conceitos relacionados à **economia comportamental** podem ser aplicados ao desenvolvimento de uma experiência digital voltada para compromisso e realização de metas.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+O MVP demonstra o fluxo:
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```text
+Entrar em um desafio
+        ↓
+Assumir um compromisso
+        ↓
+Realizar a atividade
+        ↓
+Registrar o resultado/comprovação
+        ↓
+Árbitro valida
+        ↓
+Atividade aprovada
+        ↓
+Progresso e ranking atualizados
