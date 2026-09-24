@@ -1,8 +1,5 @@
 # FIRMO — Seu compromisso, garantido.
 
-<p align="center">
-  <img src="src/assets/logo-firmo.png" alt="Logo FIRMO" width="180">
-</p>
 
 <p align="center">
   Plataforma de desafios esportivos baseada em compromisso, competição e validação.
