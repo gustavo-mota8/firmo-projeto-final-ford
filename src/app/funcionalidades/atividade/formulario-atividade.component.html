@@ -92,168 +92,82 @@
           />
         </div>
 
-        <ng-container *ngIf="desafio?.local !== 'presencial'">
-          <div class="grade-campos-dupla">
-            <!-- Campo de Métrica — condicional por categoriaMetrica do desafio -->
+        <div class="grade-campos-dupla">
+          <!-- Campo de Métrica — condicional por categoriaMetrica do desafio -->
 
-            <!-- Distância (corrida, ciclismo, natação, caminhada) -->
-            <div class="campo-formulario" *ngIf="exibirCampoDistancia">
-              <label for="valorMetrica">{{ labelCampoMetrica }}</label>
-              <input
-                id="valorMetrica"
-                name="valorMetrica"
-                type="number"
-                step="0.1"
-                min="0.1"
-                [(ngModel)]="valorMetrica"
-                required
-                [placeholder]="placeholderCampoMetrica"
-              />
-            </div>
-
-            <!-- Duração em minutos (academia, yoga, musculação) -->
-            <div class="campo-formulario" *ngIf="exibirCampoDuracao">
-              <label for="valorMetrica">{{ labelCampoMetrica }}</label>
-              <input
-                id="valorMetrica"
-                name="valorMetrica"
-                type="number"
-                step="5"
-                min="1"
-                [(ngModel)]="valorMetrica"
-                required
-                [placeholder]="placeholderCampoMetrica"
-              />
-            </div>
-
-            <!-- Número de sessões/partidas (futebol, vôlei, basquete, futevôlei) -->
-            <div class="campo-formulario" *ngIf="exibirCampoSessoes">
-              <label for="valorMetrica">{{ labelCampoMetrica }}</label>
-              <input
-                id="valorMetrica"
-                name="valorMetrica"
-                type="number"
-                step="1"
-                min="1"
-                [(ngModel)]="valorMetrica"
-                required
-                [placeholder]="placeholderCampoMetrica"
-              />
-            </div>
-
-            <!-- Resultado personalizado -->
-            <div class="campo-formulario" *ngIf="exibirCampoPersonalizado">
-              <label for="valorMetrica">{{ labelCampoMetrica }}</label>
-              <input
-                id="valorMetrica"
-                name="valorMetrica"
-                type="number"
-                step="1"
-                min="1"
-                [(ngModel)]="valorMetrica"
-                required
-                [placeholder]="placeholderCampoMetrica"
-              />
-            </div>
-
-            <!-- Tempo/Duração da sessão — não exibido para 'duracao' pois é derivado do valorMetrica -->
-            <div class="campo-formulario" *ngIf="!exibirCampoDuracao">
-              <label for="tempo">Tempo</label>
-              <input
-                id="tempo"
-                name="tempo"
-                type="text"
-                [(ngModel)]="tempo"
-                required
-                placeholder="Ex: 60 min"
-              />
-            </div>
-          </div>
-        </ng-container>
-
-        <!-- NOVO FORMULÁRIO PRESENCIAL -->
-        <ng-container *ngIf="desafio?.local === 'presencial'">
-          <div class="grade-campos-dupla">
-            <div class="campo-formulario">
-              <label for="equipe1">Participante/Equipe 1</label>
-              <input
-                id="equipe1"
-                name="equipe1"
-                type="text"
-                [(ngModel)]="equipe1"
-                required
-                placeholder="Ex: Gustavo"
-              />
-            </div>
-            <div class="campo-formulario">
-              <label for="equipe2">Participante/Equipe 2</label>
-              <input
-                id="equipe2"
-                name="equipe2"
-                type="text"
-                [(ngModel)]="equipe2"
-                required
-                placeholder="Ex: João"
-              />
-            </div>
+          <!-- Distância (corrida, ciclismo, natação, caminhada) -->
+          <div class="campo-formulario" *ngIf="exibirCampoDistancia">
+            <label for="valorMetrica">{{ labelCampoMetrica }}</label>
+            <input
+              id="valorMetrica"
+              name="valorMetrica"
+              type="number"
+              step="0.1"
+              min="0.1"
+              [(ngModel)]="valorMetrica"
+              required
+              [placeholder]="placeholderCampoMetrica"
+            />
           </div>
 
-          <div class="grade-campos-dupla">
-            <div class="campo-formulario">
-              <label for="placar1">Placar Equipe 1 (Opcional)</label>
-              <input
-                id="placar1"
-                name="placar1"
-                type="number"
-                [(ngModel)]="placar1"
-                placeholder="Ex: 21"
-              />
-            </div>
-            <div class="campo-formulario">
-              <label for="placar2">Placar Equipe 2 (Opcional)</label>
-              <input
-                id="placar2"
-                name="placar2"
-                type="number"
-                [(ngModel)]="placar2"
-                placeholder="Ex: 18"
-              />
-            </div>
+          <!-- Duração em minutos (academia, yoga, musculação) -->
+          <div class="campo-formulario" *ngIf="exibirCampoDuracao">
+            <label for="valorMetrica">{{ labelCampoMetrica }}</label>
+            <input
+              id="valorMetrica"
+              name="valorMetrica"
+              type="number"
+              step="5"
+              min="1"
+              [(ngModel)]="valorMetrica"
+              required
+              [placeholder]="placeholderCampoMetrica"
+            />
           </div>
 
-          <div class="grade-campos-dupla">
-            <div class="campo-formulario">
-              <label for="vencedor">Vencedor</label>
-              <select id="vencedor" name="vencedor" [(ngModel)]="vencedor" required>
-                <option value="" disabled>Selecione o vencedor</option>
-                <option *ngIf="equipe1" [value]="equipe1">{{ equipe1 }}</option>
-                <option *ngIf="equipe2" [value]="equipe2">{{ equipe2 }}</option>
-                <option value="Empate">Empate</option>
-              </select>
-            </div>
-            <div class="campo-formulario">
-              <label for="dataConfronto">Data do Confronto</label>
-              <input
-                id="dataConfronto"
-                name="dataConfronto"
-                type="date"
-                [(ngModel)]="dataConfronto"
-                required
-              />
-            </div>
+          <!-- Número de sessões/partidas (futebol, vôlei, basquete, futevôlei) -->
+          <div class="campo-formulario" *ngIf="exibirCampoSessoes">
+            <label for="valorMetrica">{{ labelCampoMetrica }}</label>
+            <input
+              id="valorMetrica"
+              name="valorMetrica"
+              type="number"
+              step="1"
+              min="1"
+              [(ngModel)]="valorMetrica"
+              required
+              [placeholder]="placeholderCampoMetrica"
+            />
           </div>
 
-          <div class="campo-formulario">
-            <label for="observacao">Observação (Opcional)</label>
-            <textarea
-              id="observacao"
-              name="observacao"
-              [(ngModel)]="observacao"
-              placeholder="Ex: Jogo muito disputado..."
-              rows="3"
-            ></textarea>
+          <!-- Resultado personalizado -->
+          <div class="campo-formulario" *ngIf="exibirCampoPersonalizado">
+            <label for="valorMetrica">{{ labelCampoMetrica }}</label>
+            <input
+              id="valorMetrica"
+              name="valorMetrica"
+              type="number"
+              step="1"
+              min="1"
+              [(ngModel)]="valorMetrica"
+              required
+              [placeholder]="placeholderCampoMetrica"
+            />
           </div>
-        </ng-container>
+
+          <!-- Tempo/Duração da sessão — não exibido para 'duracao' pois é derivado do valorMetrica -->
+          <div class="campo-formulario" *ngIf="!exibirCampoDuracao">
+            <label for="tempo">Tempo</label>
+            <input
+              id="tempo"
+              name="tempo"
+              type="text"
+              [(ngModel)]="tempo"
+              required
+              placeholder="Ex: 60 min"
+            />
+          </div>
+        </div>
 
         <!-- Comprovação (Upload da Foto com Evidência + Código) -->
         <div class="campo-formulario" *ngIf="desafio?.local !== 'presencial'">

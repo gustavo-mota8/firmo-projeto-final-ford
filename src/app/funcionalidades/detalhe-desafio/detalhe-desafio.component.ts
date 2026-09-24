@@ -79,9 +79,6 @@ export class DetalheDesafioComponent implements OnInit {
   entrarNoDesafio(): void {
     if (!this.desafio) return;
     this.desafioService.entrarNoDesafio(this.desafio.id);
-    if (this.usuario) {
-      this.rankingService.adicionarUsuarioAoRanking(this.desafio.id, this.usuario);
-    }
   }
 
   selecionarAba(aba: 'ranking' | 'regras' | 'atividades'): void {
