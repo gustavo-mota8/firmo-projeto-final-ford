@@ -1,9 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { UsuarioService } from '../../../core/servicos/usuario.service';
 import { AtividadeService } from '../../../core/servicos/atividade.service';
 import { Usuario } from '../../../core/modelos/usuario.model';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-cabecalho',
@@ -20,7 +21,9 @@ export class CabecalhoComponent implements OnInit {
 
   constructor(
     private usuarioService: UsuarioService,
-    private atividadeService: AtividadeService
+    private atividadeService: AtividadeService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -31,5 +34,10 @@ export class CabecalhoComponent implements OnInit {
     this.atividadeService.atividades$.subscribe(atividades => {
       this.totalPendentes = atividades.filter(a => a.status === 'pendente').length;
     });
+  }
+
+  sair() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

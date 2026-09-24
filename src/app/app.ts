@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { CabecalhoComponent } from './compartilhado/componentes/cabecalho/cabecalho.component';
 import { MenuLateralComponent } from './compartilhado/componentes/menu-lateral/menu-lateral.component';
 import { NavegacaoMobileComponent } from './compartilhado/componentes/navegacao-mobile/navegacao-mobile.component';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,8 @@ import { NavegacaoMobileComponent } from './compartilhado/componentes/navegacao-
 })
 export class App {
   menuAbertoMobile: boolean = false;
+
+  constructor(public authService: AuthService) {}
 
   alternarMenuMobile(): void {
     this.menuAbertoMobile = !this.menuAbertoMobile;

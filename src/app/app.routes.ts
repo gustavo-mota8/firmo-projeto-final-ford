@@ -6,15 +6,20 @@ import { DetalheDesafioComponent } from './funcionalidades/detalhe-desafio/detal
 import { FormularioAtividadeComponent } from './funcionalidades/atividade/formulario-atividade.component';
 import { ValidacaoComponent } from './funcionalidades/validacao/validacao.component';
 import { PerfilComponent } from './funcionalidades/perfil/perfil.component';
+import { LoginComponent } from './funcionalidades/login/login.component';
+import { CadastroComponent } from './funcionalidades/cadastro/cadastro.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: InicioComponent },
-  { path: 'desafios', component: DesafiosComponent },
-  { path: 'desafios/criar', component: CriarDesafioComponent },
-  { path: 'desafios/:id', component: DetalheDesafioComponent },
-  { path: 'desafios/:id/atividade', component: FormularioAtividadeComponent },
-  { path: 'validacao', component: ValidacaoComponent },
-  { path: 'perfil', component: PerfilComponent },
-  { path: '**', redirectTo: 'home' }
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'cadastro', component: CadastroComponent },
+  { path: 'home', component: InicioComponent, canActivate: [authGuard] },
+  { path: 'desafios', component: DesafiosComponent, canActivate: [authGuard] },
+  { path: 'desafios/criar', component: CriarDesafioComponent, canActivate: [authGuard] },
+  { path: 'desafios/:id', component: DetalheDesafioComponent, canActivate: [authGuard] },
+  { path: 'desafios/:id/atividade', component: FormularioAtividadeComponent, canActivate: [authGuard] },
+  { path: 'validacao', component: ValidacaoComponent, canActivate: [authGuard] },
+  { path: 'perfil', component: PerfilComponent, canActivate: [authGuard] },
+  { path: '**', redirectTo: 'login' }
 ];
